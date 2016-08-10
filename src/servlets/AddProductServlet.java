@@ -1,4 +1,4 @@
-package account;
+package servlets;
 
 import java.io.IOException;
 
@@ -10,17 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import account.Account;
+import account.DBHelper;
+
 /**
  * Servlet implementation class AddProduct
  */
 @WebServlet("/AddProduct")
-public class AddProduct extends HttpServlet {
+public class AddProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddProduct() {
+    public AddProductServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

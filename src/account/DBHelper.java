@@ -96,51 +96,11 @@ public class DBHelper
     	 return result;
      }
      
-     public static boolean createTask(String title, String details, String user) {
-    	 Connection con;
-    	 
-    	 try {
-    		 Class.forName("com.mysql.jdbc.Driver");
- 			con = DriverManager.getConnection
-                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
- 			PreparedStatement ps =con.prepareStatement
- 	 				("SELECT id FROM user_account WHERE user_name = ?;");
- 			
- 			ps.setString(1, user);
- 			
- 			ResultSet rs = ps.executeQuery();
- 			
- 			int id = 0;
- 			
- 			if(rs.next()) 
- 				id = rs.getInt(1);
- 			
- 			ps =con.prepareStatement
- 				("INSERT INTO todo_list"
- 						+ "(title, details, status, user_id) VALUES"
- 					    + "(?,?,?,?)");
-
-			ps.setString(1, title);
-			ps.setString(2, details);
-			ps.setInt(3, 0);
-			ps.setInt(4, id);
-			
-			
-			ps.executeUpdate();
-    	 } catch (Exception ex) {
-    		 ex.printStackTrace();
-    		 
-    		 return false;
-    	 }
-    	 
-    	 return true;
-     }
-     
      public static boolean createProduct(String name, String description, int type, float price, String imagePath) {
     	 Connection con;
     	 
     	 try {
-    		 Class.forName("com.mysql.jdbc.Driver");
+    		Class.forName("com.mysql.jdbc.Driver");
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
@@ -155,6 +115,165 @@ public class DBHelper
 			ps.setString	(5, imagePath);
 			
 			ps.executeUpdate();
+
+			ps =con.prepareStatement
+ 	 				("SELECT id FROM products ORDER BY id DESC LIMIT 1");
+ 			
+ 			ResultSet rs = ps.executeQuery();
+ 			
+ 			int id = -1;
+ 			
+ 			if(rs.next()) {
+ 				id = rs.getInt(1);
+ 			} else {
+ 				return false;
+ 			}
+			
+			ps = con.prepareStatement
+	 				("INSERT INTO stock"
+	 						+ "(stockAmt, productID) VALUES"
+	 					    + "(?,?)");
+
+			ps.setInt		(1, 0);
+			ps.setInt		(2, id);
+				
+			ps.executeUpdate();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean deleteProduct(int productID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean editProduct(int productID, String name, String description, int type, float price, String imagePath) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     /*
+      *  Update stock amount of a product using it's product ID
+      *  in the stock table.
+      */
+     public static boolean updateStock(int productID, int stockAmt) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean addReview(int authorID, int productID, String review, int rating) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean deleteReview(int reviewID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean updateReview(int reviewID, String review) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -192,86 +311,4 @@ public class DBHelper
     	 return accountType;
      }
      
-     public static boolean editTask(String title, String details, String user) {
-    	 
-    	 
-    	 return true;
-     }
-     
-     public static boolean deleteTask(int id) {
-    	 Connection con;
-    	 
-		 try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection
-                 ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
-    		PreparedStatement ps = con.prepareStatement
-	 				("DELETE FROM todo_list WHERE id = ?;");
-    		
-    		ps.setInt(1, id);
-    		
-    		ps.executeUpdate();
-		 }catch (Exception e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
- 		}
-    	 
-    	 return true;
-     }
-     
-     public static ArrayList<Task> getTasks(String user) {
-    	 Connection con;
-    	 ArrayList<Task> tasks = new ArrayList<Task>();
-    	 
-    	 try {
-    		 Class.forName("com.mysql.jdbc.Driver");
- 			con = DriverManager.getConnection
-                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
- 			
- 			PreparedStatement ps =con.prepareStatement
- 	 				("SELECT id FROM user_account WHERE user_name = ?;");
- 			
- 			ps.setString(1, user);
- 			
- 			ResultSet rs = ps.executeQuery();
- 			
- 			int id = 0;
- 			
- 			if(rs.next()) {
- 				id = rs.getInt(1);
- 			} else {
- 				return tasks;
- 			}
- 			
- 			
- 			ps = con.prepareStatement
- 				("SELECT title, details, status, id FROM todo_list WHERE user_id = " + id + ";");
-			
-			rs = ps.executeQuery();
-			
-			tasks = new ArrayList<Task>();
-
-			while(rs.next()){
-				Task task = new Task();
-				
-				task.setTitle(rs.getString(1));
-				task.setDescription(rs.getString(2));
-				
-				boolean status = false;
-				
-				if(rs.getInt(3) == 1)
-					status = true;
-				
-				task.setID(rs.getInt(4));
-				
-				task.setDone(status);
-				
-				tasks.add(task);
-			}
-    	 } catch (Exception ex) {
-    		 ex.printStackTrace();
-    	 }
-    	 
-    	 return tasks;
-     }
 }
