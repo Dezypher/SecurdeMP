@@ -7,7 +7,7 @@ public class DBHelper
  {	
 	private final static String password = "abcd1234";
 	private final static String username = "root";
-	private final static String dbname = "scrd";
+	private final static String dbname = "talaria";
 	private final static String port = "3306";
 	
      public static boolean checkUser(String uname,String pass) 
@@ -134,6 +134,62 @@ public class DBHelper
     	 }
     	 
     	 return true;
+     }
+     
+     public static boolean createProduct(String name, String description, int type, float price, String imagePath) {
+    	 Connection con;
+    	 
+    	 try {
+    		 Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("INSERT INTO products"
+ 						+ "(name, type, description, price, imagePath) VALUES"
+ 					    + "(?,?,?,?,?)");
+
+			ps.setString	(1, name);
+			ps.setInt		(2, type);
+			ps.setString	(3, description);
+			ps.setFloat		(4, price);
+			ps.setString	(5, imagePath);
+			
+			ps.executeUpdate();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     public static int getAccountType(String username) {
+    	 Connection con;
+    	 int accountType = -1;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			
+ 			PreparedStatement ps =con.prepareStatement
+ 	 				("SELECT accType FROM account WHERE user = ?;");
+ 			
+ 			ps.setString(1, username);
+ 			
+ 			ResultSet rs = ps.executeQuery();
+ 			
+ 			if(rs.next()) {
+ 				accountType = rs.getInt(1);
+ 			} else {
+ 				return accountType;
+ 			}
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 
+    	 return accountType;
      }
      
      public static boolean editTask(String title, String details, String user) {
