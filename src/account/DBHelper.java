@@ -22,7 +22,7 @@ public class DBHelper
          Connection con=DriverManager.getConnection
                         ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
          PreparedStatement ps =con.prepareStatement
-                             ("select * from user_account where user_name=? and user_password=?");
+                             ("select * from account where user=? and password=?");
          ps.setString(1, uname);
          ps.setString(2, pass);
          ResultSet rs =ps.executeQuery();
@@ -35,7 +35,7 @@ public class DBHelper
          return st;                 
      }
      
-     public static int createUser(String uname, String pass, String email, String fname, String lname) {
+     public static int createUser(String uname, String pass, int accType, String email, String fname, String mname, String lname) {
     	Connection con;
     	int result = 0;
     	// 0 - Success, 1 - Username Taken, 2 - E-Mail Taken, 3 - Account Exists (Both), 4 - Server Error
@@ -46,7 +46,7 @@ public class DBHelper
                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
 
 			PreparedStatement ps =con.prepareStatement
-			                      ("select * from user_account where user_name=?");
+			                      ("select * from account where user=?");
 			ps.setString(1, uname);
 			  
 			ResultSet rs =ps.executeQuery();
@@ -56,7 +56,7 @@ public class DBHelper
 			}
 
 			ps = con.prepareStatement
-			                      ("select * from user_account where email=?");
+			                      ("select * from account where email=?");
 			ps.setString(1, email);
 			  
 			rs =ps.executeQuery();
@@ -72,14 +72,16 @@ public class DBHelper
 			if(result == 0) {
 				ps = con.prepareStatement
 				          ("INSERT INTO user_account"
-				          + "(user_name, user_password, email, first_name, last_name) VALUES"
+				          + "(user, password, acctype, email, fname, mname, lname) VALUES"
 				          + "(?,?,?,?,?)");
 				
 				ps.setString(1, uname);
 				ps.setString(2, pass);
-				ps.setString(3, email);
-				ps.setString(4, fname);
-				ps.setString(5, lname);
+				ps.setInt	(3, accType);
+				ps.setString(4, email);
+				ps.setString(5, fname);
+				ps.setString(6, mname);
+				ps.setString(7, lname);
 				
 				ps.executeUpdate();
 			}

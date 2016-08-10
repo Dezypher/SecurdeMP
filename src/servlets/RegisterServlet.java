@@ -1,4 +1,4 @@
-package account;
+package servlets;
 
 import java.io.IOException;
 
@@ -9,15 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.sql.*;
+import account.Account;
+import account.DBHelper;
+
 /**
  * Servlet implementation class Register
  */
 @WebServlet("/Register")
-public class Register extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public Register() {
+    public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,15 +50,16 @@ public class Register extends HttpServlet {
             String user = request.getParameter("uname");
             String pass = request.getParameter("pass");
             String fname = request.getParameter("fname");
+            String mname = request.getParameter("mname");
             String lname = request.getParameter("lname");
             String email = request.getParameter("email");
         	
 	        String errorMsg = "";
 	        boolean accepted = true;
 	        
-	        if(user.length() == 0 || pass.length() == 0 || 
-	           fname.length() == 0 || lname.length() == 0 ||
-	           email.length() == 0){
+	        if(user.length() == 0 	|| pass.length() == 0 	|| 
+	           fname.length() == 0 	|| lname.length() == 0 	|| 
+	           mname.length() == 0 	|| email.length() == 0){
 	        	errorMsg += "A field is empty!";
 	        	accepted = false;
 	        }
@@ -68,7 +71,7 @@ public class Register extends HttpServlet {
 	        }
 	        
 	        if(accepted){
-	        	int result = DBHelper.createUser(user, pass, email, fname, lname);
+	        	int result = DBHelper.createUser(user, pass, Account.TYPE_CUSTOMER, email, fname, mname, lname);
 	        	
 	        	if(result == 0) {
 	                RequestDispatcher rs = request.getRequestDispatcher("index.jsp");

@@ -1,4 +1,4 @@
-package account;
+package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import account.DBHelper;
+
 /**
  * Servlet implementation class Login
  */
 @WebServlet("/Login")
-public class Login extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 	/**
 	 * 
 	 */
