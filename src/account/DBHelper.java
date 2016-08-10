@@ -150,6 +150,75 @@ public class DBHelper
      }
      
      // ! ---------  NOT DONE ---------- !
+     public static boolean addShippingAddress(int accountID, String houseNo, String street, String subdivision,
+    		 									String city, String postalCode, String country) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static int getAccountID(String username) {
+    	 Connection con;
+    	 int userID = -1;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return userID;
+    	 }
+    	 
+    	 return userID;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean addBillingAddress(int accountID, String houseNo, String street, String subdivision,
+    		 									String city, String postalCode, String country) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates/inserts
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
      public static boolean deleteProduct(int productID) {
     	 Connection con;
     	 
@@ -199,6 +268,110 @@ public class DBHelper
       *  in the stock table.
       */
      public static boolean updateStock(int productID, int stockAmt) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     /*
+      *  Insert a row in cart table with the
+      *  accountID of the buyer and the productID
+      *  of the product to buy and the amount of it
+      */
+     public static boolean addToCart(int accountID, int productID, int amount) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     /*
+      *  Delete a row from cart table
+      */
+     public static boolean deleteFromCart(int accountID, int productID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     /*
+      *  Delete all rows with the given accountID
+      */
+     public static boolean clearCart(int accountID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("QUERY/UPDATE STATEMENT HERE");
+			
+			//ps.executeUpdate(); for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     /*
+      *  Update amount of a product in the customer's cart
+      *  to be used in instances where the customer 
+      *  increases/decreases the amount to buy
+      */
+     public static boolean updateCartItem(int accountID, int productID, int amount) {
     	 Connection con;
     	 
     	 try {

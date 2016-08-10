@@ -47,6 +47,7 @@ public class RegisterServlet extends HttpServlet {
             rs.forward(request, response);
         } else {
     		
+        	//ACCOUNT DETAILS
             String user = request.getParameter("uname");
             String pass = request.getParameter("pass");
             String fname = request.getParameter("fname");
@@ -54,6 +55,22 @@ public class RegisterServlet extends HttpServlet {
             String lname = request.getParameter("lname");
             String email = request.getParameter("email");
         	
+            //BILLING ADDRESS
+            String bHouseNo = request.getParameter("bhouseno");
+            String bStreet = request.getParameter("bstreet");
+            String bSubd = request.getParameter("bsubd");
+            String bCity = request.getParameter("bcity");
+            String bPCode = request.getParameter("bpcode");
+            String bCountry = request.getParameter("bcountry");
+        
+            //BILLING ADDRESS
+            String sHouseNo = request.getParameter("shouseno");
+            String sStreet = request.getParameter("sstreet");
+            String sSubd = request.getParameter("ssubd");
+            String sCity = request.getParameter("scity");
+            String sPCode = request.getParameter("spcode");
+            String sCountry = request.getParameter("scountry");
+            
 	        String errorMsg = "";
 	        boolean accepted = true;
 	        
@@ -74,6 +91,11 @@ public class RegisterServlet extends HttpServlet {
 	        	int result = DBHelper.createUser(user, pass, Account.TYPE_CUSTOMER, email, fname, mname, lname);
 	        	
 	        	if(result == 0) {
+	        		int accountID = DBHelper.getAccountID(user);
+	        		
+	        		DBHelper.addBillingAddress(accountID, bHouseNo, bStreet, bSubd, bCity, bPCode, bCountry);
+	        		DBHelper.addShippingAddress(accountID, sHouseNo, sStreet, sSubd, sCity, sPCode, sCountry);
+	        		
 	                RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
 	                request.setAttribute("errorMessage", "Registration Successful!");
 	                rs.forward(request, response);
