@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `user` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
   `acctype` int(11) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `fname` varchar(45) DEFAULT NULL,
@@ -46,28 +47,55 @@ LOCK TABLES `account` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `customer`
+-- Table structure for table `billing_addr`
 --
 
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `billing_addr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer` (
+CREATE TABLE `billing_addr` (
   `accountID` int(11) NOT NULL,
-  `billingID` int(11) DEFAULT NULL,
-  `shippingID` int(11) DEFAULT NULL,
-  `ccarfInfoID` int(11) DEFAULT NULL,
+  `houseNo` varchar(45) DEFAULT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `subdivision` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `postalCode` varchar(45) DEFAULT NULL,
+  `country` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`accountID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customer`
+-- Dumping data for table `billing_addr`
 --
 
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+LOCK TABLES `billing_addr` WRITE;
+/*!40000 ALTER TABLE `billing_addr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `billing_addr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cart` (
+  `accountID` int(11) NOT NULL,
+  `productID` int(11) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
+  PRIMARY KEY (`accountID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart`
+--
+
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -148,6 +176,56 @@ LOCK TABLES `review` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sales`
+--
+
+DROP TABLE IF EXISTS `sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sales` (
+  `productID` int(11) DEFAULT NULL,
+  `amountSold` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sales`
+--
+
+LOCK TABLES `sales` WRITE;
+/*!40000 ALTER TABLE `sales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shipping_addr`
+--
+
+DROP TABLE IF EXISTS `shipping_addr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `shipping_addr` (
+  `accountID` int(11) NOT NULL,
+  `houseNo` varchar(45) DEFAULT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `subdivision` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `postalCode` varchar(45) DEFAULT NULL,
+  `country` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`accountID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shipping_addr`
+--
+
+LOCK TABLES `shipping_addr` WRITE;
+/*!40000 ALTER TABLE `shipping_addr` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shipping_addr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `stock`
 --
 
@@ -155,9 +233,8 @@ DROP TABLE IF EXISTS `stock`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stock` (
-  `stockAmt` int(11) NOT NULL,
-  `product` int(11) DEFAULT NULL,
-  PRIMARY KEY (`stockAmt`)
+  `productID` int(11) DEFAULT NULL,
+  `stockAmt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-10 18:52:49
+-- Dump completed on 2016-08-11 12:04:38

@@ -1,4 +1,4 @@
-package account;
+package database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -133,11 +133,21 @@ public class DBHelper
 			
 			ps = con.prepareStatement
 	 				("INSERT INTO stock"
-	 						+ "(stockAmt, productID) VALUES"
+	 						+ "(productID, stockAmt) VALUES"
 	 					    + "(?,?)");
 
-			ps.setInt		(1, 0);
-			ps.setInt		(2, id);
+			ps.setInt		(1, id);
+			ps.setInt		(2, 0);
+				
+			ps.executeUpdate();
+			
+			ps = con.prepareStatement
+	 				("INSERT INTO sales"
+	 						+ "(productID, amountSold) VALUES"
+	 					    + "(?,?)");
+
+			ps.setInt		(1, id);
+			ps.setInt		(2, 0);
 				
 			ps.executeUpdate();
     	 } catch (Exception ex) {

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import account.Account;
-import account.DBHelper;
+import database.DBHelper;
 
 /**
  * Servlet implementation class EditProductServlet
@@ -45,10 +45,10 @@ public class EditProductServlet extends HttpServlet {
 				
 				String id = request.getParameter("productid");
 				String name = request.getParameter("title");
-				String type = request.getParameter("details");
-				String description = request.getParameter("details");
-				String price = request.getParameter("details");
-				String imagePath = request.getParameter("details");
+				String type = request.getParameter("type");
+				String description = request.getParameter("description");
+				String price = request.getParameter("price");
+				String imagePath = request.getParameter("imagepath");
 				
 				Cookie ck[] = request.getCookies();
 

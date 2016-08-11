@@ -23,6 +23,4 @@ public class Account {
 		this.mname = mname;
 		this.lname = lname;
 	}
-	
-	
 }

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import account.DBHelper;
+import database.DBHelper;
 
 /**
  * Servlet implementation class ClearCartServlet
@@ -75,5 +75,4 @@ public class UpdateCartItemServlet extends HttpServlet {
    	   		rs.forward(request, response);
 		}
 	}
-
 }

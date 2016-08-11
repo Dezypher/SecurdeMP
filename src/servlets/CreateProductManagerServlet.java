@@ -13,17 +13,23 @@ import account.Account;
 import database.DBHelper;
 
 /**
- * Servlet implementation class Register
+ * Servlet implementation class CreateProductManagerServlet
  */
-@WebServlet("/Register")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/CreateProductManagerServlet")
+public class CreateProductManagerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public RegisterServlet() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public CreateProductManagerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -54,22 +60,6 @@ public class RegisterServlet extends HttpServlet {
             String mname = request.getParameter("mname");
             String lname = request.getParameter("lname");
             String email = request.getParameter("email");
-        	
-            //BILLING ADDRESS
-            String bHouseNo = request.getParameter("bhouseno");
-            String bStreet = request.getParameter("bstreet");
-            String bSubd = request.getParameter("bsubd");
-            String bCity = request.getParameter("bcity");
-            String bPCode = request.getParameter("bpcode");
-            String bCountry = request.getParameter("bcountry");
-        
-            //BILLING ADDRESS
-            String sHouseNo = request.getParameter("shouseno");
-            String sStreet = request.getParameter("sstreet");
-            String sSubd = request.getParameter("ssubd");
-            String sCity = request.getParameter("scity");
-            String sPCode = request.getParameter("spcode");
-            String sCountry = request.getParameter("scountry");
             
 	        String errorMsg = "";
 	        boolean accepted = true;
@@ -88,16 +78,10 @@ public class RegisterServlet extends HttpServlet {
 	        }
 	        
 	        if(accepted){
-	        	int result = DBHelper.createUser(user, pass, Account.TYPE_CUSTOMER, email, fname, mname, lname);
+	        	int result = DBHelper.createUser(user, pass, Account.TYPE_PRODUCTMANAGER, email, fname, mname, lname);
 	        	
-	        	if(result == 0) {
-	        		int accountID = DBHelper.getAccountID(user);
-	        		
-	        		DBHelper.addBillingAddress(accountID, bHouseNo, bStreet, bSubd, bCity, bPCode, bCountry);
-	        		DBHelper.addShippingAddress(accountID, sHouseNo, sStreet, sSubd, sCity, sPCode, sCountry);
-	        		
-	                RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
-	                request.setAttribute("errorMessage", "Registration Successful!");
+	        	if(result == 0) {RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
+	                request.setAttribute("errorMessage", "Account Creation Successful!");
 	                rs.forward(request, response);
 	        	} else {
 	                RequestDispatcher rs = request.getRequestDispatcher("reg.jsp");
