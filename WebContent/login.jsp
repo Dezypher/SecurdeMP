@@ -1,92 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
 
+
+<html>
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>To-Do List Login</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
-    <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+   <title>Talaria Co.</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+   <script src="js/bootstrap.min.js"></script>
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
-
 <body>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form method="post" action="Login" id="login">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="uname" type="text" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="pass" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a onclick="login()" class="btn btn-lg btn-success btn-block">Login</a>
-                            </fieldset>
-                            <div>${errorMessage}</div>
-                            <div><a href="reg.jsp">Register</a></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="pull-left" href="#"><img src="logo.png"></a>
     </div>
-    
-    <script>
-    	function login(){
-    		document.forms["login"].submit();
-    	}
-    </script>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Boots</a></li>
+        <li><a href="#">Shoes</a></li>
+        <li><a href="#">Sandals</a></li>
+        <li><a href="#">Slippers</a></li>
+        
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
+      </form>
+      <div class="nav navbar-nav navbar-right">
+         <ul class="nav navbar-nav">
+        <li><a href="#">Log In</a></li>
+        <li><a href="#">Sign Up</a></li>        
+      </ul>
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</div>
+<br/>
+<!-- put contents here -->
 
-    <!-- jQuery -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<div class="container">
+   <div class="panel panel-default">
+      <div class="page-header">
+	    <h3>Log In</h3>
+	  </div>
+	  <div class="row">
+	     <div class="col-xs-3">
+	        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-3">
+	        <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	
+	  <button class="btn btn-primary" type="button">Log In</button>
+   </div>
+</div>
+  
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="dist/js/sb-admin-2.js"></script>
-
+<footer class="footer">
+<div class="container">
+<p class="muted-credit">Talaria Footwear Company (c) 2016</p>
+</div>
+</footer>
 </body>
-
 </html>
