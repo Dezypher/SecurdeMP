@@ -9,19 +9,6 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <script src="js/bootstrap.min.js"></script>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   
-   <%
-						Cookie ck[] = request.getCookies();
-					String user = "";
-	
-					for(int i = 0; i < ck.length; i++) {
-						if(ck[i].getName().equals("user")){
-							user = ck[i].getValue();
-						}
-					}			
-					
-	%>
-	
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -49,18 +36,10 @@
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>
-      
-      <form method="post" action="Logout" id="logout">
-      </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-         <% if(user.length() == 0) { %>
         <li><a href="login.jsp">Log In</a></li>
-        <li><a href="signup.jsp">Sign Up</a></li>   
-          <%} else { %>
-        <li><a href="#"><%=user%></a></li>
-        <li><a href="Logout">Logout</a></li>   
-        <%} %>
+        <li><a href="signup.jsp">Sign Up</a></li>        
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->
@@ -71,38 +50,60 @@
 <!-- put contents here -->
 
 <div class="container">
-   <div class="row">
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="slipp.png" onclick="" />
-            <h5>Turtle shell slippers</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Super hard slippers with materials from endangered turtle species. Made in China.</small></p>
-         </div>
+   <div class="panel panel-default">
+     <div class="panel-body">
+        <div class="page-header">
+    <h3>New Manager</h3>
+  </div>
+  <div>${errorMessage}</div>
+  <form method="post" action="Register" id="signup">
+  	<div class="row">
+	    <label class="radio-inline"><input type="radio" name="optradio">Product Manager</label>
+		<label class="radio-inline"><input type="radio" name="optradio">Accounting Manager</label>
+    </div>
+		  
+	  <div class="row">
+	     <div class="col-xs-3">
+	        <input type="text" name="fname" class="form-control" placeholder="First Name" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-1">
+	        <input type="text" name="mname" class="form-control" placeholder="M.I." aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-3">
+	        <input type="text" name="lname" class="form-control" placeholder="Last Name" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	     <div class="col-xs-2">
+	      <input type="text" name="uname" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="password" name="pass" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	     <div class="col-xs-5">
+	      <input type="text" name="email" class="form-control" placeholder="E-mail Address" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  
+	  <!-- edit onclick -->
+	  <button onclick="" class="btn btn-primary" type="button">Submit</button>
+	</form>
       </div>
-      <!--Duplicate this part -->
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="boots.png" onclick="" />
-            <h5>Burnt Boots</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Boots from burned street dogs. Made in China.</small></p>
-         </div>
-      </div>
-      <!--Duplicate until here -->
    </div>
-   
 </div>
-  
+
     <script>
     	function signup(){
-    		document.forms["logout"].submit();
+    		document.forms["signup"].submit();
     	}
     </script>
 
+
 <footer class="footer">
 <div class="container">
-<p class="muted-credit">Talaria Footwear Company (c) 2016</p>
+<p class="text-muted">Talaria Footwear Company (c) 2016</p>
 </div>
 </footer>
 </body>

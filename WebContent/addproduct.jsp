@@ -9,19 +9,6 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <script src="js/bootstrap.min.js"></script>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   
-   <%
-						Cookie ck[] = request.getCookies();
-					String user = "";
-	
-					for(int i = 0; i < ck.length; i++) {
-						if(ck[i].getName().equals("user")){
-							user = ck[i].getValue();
-						}
-					}			
-					
-	%>
-	
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -49,18 +36,10 @@
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>
-      
-      <form method="post" action="Logout" id="logout">
-      </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-         <% if(user.length() == 0) { %>
-        <li><a href="login.jsp">Log In</a></li>
-        <li><a href="signup.jsp">Sign Up</a></li>   
-          <%} else { %>
-        <li><a href="#"><%=user%></a></li>
-        <li><a href="Logout">Logout</a></li>   
-        <%} %>
+        <li><a href="#">Log In</a></li>
+        <li><a href="#">Sign Up</a></li>        
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->
@@ -71,34 +50,32 @@
 <!-- put contents here -->
 
 <div class="container">
-   <div class="row">
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="slipp.png" onclick="" />
-            <h5>Turtle shell slippers</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Super hard slippers with materials from endangered turtle species. Made in China.</small></p>
-         </div>
-      </div>
-      <!--Duplicate this part -->
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="boots.png" onclick="" />
-            <h5>Burnt Boots</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Boots from burned street dogs. Made in China.</small></p>
-         </div>
-      </div>
-      <!--Duplicate until here -->
+   <div class="panel panel-default">
+      <div class="page-header">
+    <h3>Add New Product</h3>
+  </div>
+  <div class="row">
+     <div class="col-xs-3">
+        <input type="text" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-xs-3">
+        <input type="text" class="form-control" placeholder="Price" aria-describedby="basic-addon1">
+    </div>
+  </div><br/>
+  <div class="row">
+     <div class="col-xs-5">
+        <input type="text" class="form-control" placeholder="Description" aria-describedby="basic-addon1">
+    </div>
+    <div class="col-xs-1">
+        <input type="text" class="form-control" placeholder="Stock" aria-describedby="basic-addon1">
+    </div>
+  </div><br/>
+
+  <button class="btn btn-primary" type="button">Submit</button>
+
    </div>
-   
 </div>
   
-    <script>
-    	function signup(){
-    		document.forms["logout"].submit();
-    	}
-    </script>
 
 <footer class="footer">
 <div class="container">
