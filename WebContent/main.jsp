@@ -9,6 +9,19 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <script src="js/bootstrap.min.js"></script>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <%
+						Cookie ck[] = request.getCookies();
+					String user = "";
+	
+					for(int i = 0; i < ck.length; i++) {
+						if(ck[i].getName().equals("user")){
+							user = ck[i].getValue();
+						}
+					}			
+					
+	%>
+	
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -36,10 +49,18 @@
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>
+      
+      <form method="post" action="Logout" id="logout">
+      </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-        <li><a href="#">Log In</a></li>
-        <li><a href="#">Sign Up</a></li>        
+         <% if(user.length() == 0) { %>
+        <li><a href="login.jsp">Log In</a></li>
+        <li><a href="signup.jsp">Sign Up</a></li>   
+          <%} else { %>
+        <li><a href="#"><%=user%></a></li>
+        <li><a href="Logout">Logout</a></li>   
+        <%} %>
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->
@@ -55,6 +76,11 @@
    </div>
 </div>
   
+    <script>
+    	function signup(){
+    		document.forms["logout"].submit();
+    	}
+    </script>
 
 <footer class="footer">
 <div class="container">

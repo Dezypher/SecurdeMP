@@ -9,7 +9,7 @@
 	<body>
 	<%
 	   // New location to be redirected
-	   	String site = new String("login.jsp");
+	   	String site = new String("main.jsp");
 		System.out.println("REDIRECT");
 		
 	   	response.setStatus(response.SC_MOVED_TEMPORARILY);

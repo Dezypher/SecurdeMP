@@ -1,6 +1,12 @@
 package models;
 
 public class Account {
+	
+	public static final int TYPE_CUSTOMER 			= 1;
+	public static final int TYPE_PRODUCTMANAGER 	= 2;
+	public static final int TYPE_ACCOUNTINGMANAGER 	= 3;
+	public static final int TYPE_ADMINISTRATOR 		= 4;
+	
 	private String username, password, email, firstName, middleName, lastName;
 	private int accountType, userID;
 	

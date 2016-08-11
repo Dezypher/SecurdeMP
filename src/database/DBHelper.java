@@ -27,6 +27,8 @@ public class DBHelper
          ps.setString(2, pass);
          ResultSet rs =ps.executeQuery();
          st = rs.next();
+			
+			con.close();
         
       }catch(Exception e)
       {
@@ -71,9 +73,9 @@ public class DBHelper
 			
 			if(result == 0) {
 				ps = con.prepareStatement
-				          ("INSERT INTO user_account"
+				          ("INSERT INTO account"
 				          + "(user, password, acctype, email, fname, mname, lname) VALUES"
-				          + "(?,?,?,?,?)");
+				          + "(?,?,?,?,?,?,?)");
 				
 				ps.setString(1, uname);
 				ps.setString(2, pass);
@@ -84,6 +86,8 @@ public class DBHelper
 				ps.setString(7, lname);
 				
 				ps.executeUpdate();
+				
+				con.close();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -150,6 +154,8 @@ public class DBHelper
 			ps.setInt		(2, 0);
 				
 			ps.executeUpdate();
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -173,6 +179,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -183,7 +191,7 @@ public class DBHelper
      }
      
      // ! ---------  NOT DONE ---------- !
-     public static int getAccountID(String username) {
+     public static int getAccountID(String user) {
     	 Connection con;
     	 int userID = -1;
     	 
@@ -192,10 +200,15 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+ 				("SELECT id FROM account where user = '" + user +"';");
 			
 			//ps.executeUpdate(); for updates/inserts
- 			//ResultSet rs = ps.executeQuery(); for queries
+ 			ResultSet rs = ps.executeQuery();
+			
+ 			rs.next();
+ 			userID = rs.getInt(1);
+ 			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -219,6 +232,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -237,10 +252,14 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+ 				("DELETE FROM products WHERE productID = ?");
+ 			
+ 			ps.setInt(1, productID);
 			
-			//ps.executeUpdate(); for updates
+			ps.executeUpdate(); //for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -263,6 +282,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -289,6 +310,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -316,6 +339,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -337,10 +362,15 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+ 				("DELETE FROM cart WHERE accountID = ? AND productID = ?;");
+ 			
+ 			ps.setInt(1, accountID);
+ 			ps.setInt(2, productID);
 			
-			//ps.executeUpdate(); for updates
+			ps.executeUpdate(); //for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -366,6 +396,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -393,6 +425,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -415,6 +449,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -435,8 +471,10 @@ public class DBHelper
  			PreparedStatement ps = con.prepareStatement
  				("QUERY/UPDATE STATEMENT HERE");
 			
-			//ps.executeUpdate(); for updates/inserts
+			ps.executeUpdate(); //for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 

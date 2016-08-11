@@ -38,8 +38,8 @@
       </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-        <li><a href="#">Log In</a></li>
-        <li><a href="#">Sign Up</a></li>        
+        <li><a href="login.jsp">Log In</a></li>
+        <li><a href="signup.jsp">Sign Up</a></li>        
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->
@@ -55,80 +55,89 @@
         <div class="page-header">
     <h3>Sign Up</h3>
   </div>
-  <div class="row">
-     <div class="col-xs-3">
-        <input type="text" class="form-control" placeholder="First Name" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" class="form-control" placeholder="M.I." aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-3">
-        <input type="text" class="form-control" placeholder="Last Name" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row">
-     <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row">
-     <div class="col-xs-5">
-      <input type="text" class="form-control" placeholder="E-mail Address" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="page-header">
-    <h4>Billing Address</h4>
-  </div>
-  <div class="row">
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="House #" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Street" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Subdivision" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row">
-    <div class="col-xs-3">
-      <input type="text" class="form-control" placeholder="City" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-3">
-      <input type="text" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="page-header">
-    <h4>Shipping Address</h4>
-  </div>
-  <div class="row">
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="House #" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Street" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-2">
-      <input type="text" class="form-control" placeholder="Subdivision" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row">
-    <div class="col-xs-3">
-      <input type="text" class="form-control" placeholder="City" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-3">
-      <input type="text" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-
-  <button class="btn btn-primary" type="button">Submit</button>
-
+  <div>${errorMessage}</div>
+  <form method="post" action="Register" id="signup">
+	  <div class="row">
+	     <div class="col-xs-3">
+	        <input type="text" name="fname" class="form-control" placeholder="First Name" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-1">
+	        <input type="text" name="mname" class="form-control" placeholder="M.I." aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-3">
+	        <input type="text" name="lname" class="form-control" placeholder="Last Name" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	     <div class="col-xs-2">
+	      <input type="text" name="uname" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="password" name="pass" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	     <div class="col-xs-5">
+	      <input type="text" name="email" class="form-control" placeholder="E-mail Address" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="page-header">
+	    <h4>Billing Address</h4>
+	  </div>
+	  <div class="row">
+	    <div class="col-xs-2">
+	      <input type="text" name="bhouseno" class="form-control" placeholder="House #" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="text" name="bstreet" class="form-control" placeholder="Street" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="text" name="bsubd" class="form-control" placeholder="Subdivision" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	    <div class="col-xs-3">
+	      <input type="text" name="bcity" class="form-control" placeholder="City" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-3">
+	      <input type="text" name="bcountry" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="page-header">
+	    <h4>Shipping Address</h4>
+	  </div>
+	  <div class="row">
+	    <div class="col-xs-2">
+	      <input type="text" name="shouseno" class="form-control" placeholder="House #" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="text" name="sstreet" class="form-control" placeholder="Street" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-2">
+	      <input type="text" name="ssubd" class="form-control" placeholder="Subdivision" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	  <div class="row">
+	    <div class="col-xs-3">
+	      <input type="text" name="scity" class="form-control" placeholder="City" aria-describedby="basic-addon1">
+	    </div>
+	    <div class="col-xs-3">
+	      <input type="text" name="bcountry" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
+	    </div>
+	  </div><br/>
+	
+	  <button onclick="signup()" class="btn btn-primary" type="button">Submit</button>
+	</form>
       </div>
    </div>
 </div>
+
+    <script>
+    	function signup(){
+    		document.forms["signup"].submit();
+    	}
+    </script>
+
 
 <footer class="footer">
 <div class="container">

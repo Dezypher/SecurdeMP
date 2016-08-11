@@ -38,8 +38,8 @@
       </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-        <li><a href="#">Log In</a></li>
-        <li><a href="#">Sign Up</a></li>        
+        <li><a href="login.jsp">Log In</a></li>
+        <li><a href="signup.jsp">Sign Up</a></li>        
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->
@@ -52,21 +52,29 @@
 <div class="container">
    <div class="panel panel-default">
       <div class="page-header">
+  		<div>${errorMessage}</div>
 	    <h3>Log In</h3>
 	  </div>
+	  <form id="login" method="post" action="Login">
 	  <div class="row">
 	     <div class="col-xs-3">
-	        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+	        <input type="text" name="uname" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
 	    </div>
 	    <div class="col-xs-3">
-	        <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+	        <input type="password" name="pass" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
 	    </div>
 	  </div><br/>
 	
-	  <button class="btn btn-primary" type="button">Log In</button>
+	  <button onclick="login()" class="btn btn-primary" type="button">Log In</button>
+	  </form>
    </div>
 </div>
   
+<script>
+	function login() {
+		document.forms["login"].submit();
+	}
+</script>
 
 <footer class="footer">
 <div class="container">
