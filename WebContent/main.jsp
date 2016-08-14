@@ -11,15 +11,23 @@
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
    
    <%
-						Cookie ck[] = request.getCookies();
+					Cookie ck[] = request.getCookies();
 					String user = "";
-	
-					for(int i = 0; i < ck.length; i++) {
-						if(ck[i].getName().equals("user")){
-							user = ck[i].getValue();
-						}
-					}			
+					String userType = "0";
 					
+					if(ck != null) {
+						for(int i = 0; i < ck.length; i++) {
+							if(ck[i].getName().equals("user")){
+								user = ck[i].getValue();
+							}
+							
+							if(ck[i].getName().equals("usertype")){
+								userType = ck[i].getValue();
+							}
+						}			
+					}
+					
+					System.out.println("userType: " + userType);
 	%>
 	
 </head>
@@ -33,14 +41,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="pull-left" href="#"><img src="logo.png"></a>
+      <a class="pull-left" href="main.jsp"><img src="logo.png"></a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Boots</a></li>
-        <li><a href="#">Shoes</a></li>
-        <li><a href="#">Sandals</a></li>
-        <li><a href="#">Slippers</a></li>
+        <li><a href="products.jsp?producttype=1">Boots</a></li>
+        <li><a href="products.jsp?producttype=2">Shoes</a></li>
+        <li><a href="products.jsp?producttype=3">Sandals</a></li>
+        <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" role="search">
@@ -58,6 +66,11 @@
         <li><a href="login.jsp">Log In</a></li>
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
+          	<%if(userType.equals("2")) {%>
+        <li><a href="#">Manage Products</a></li>
+          	<%} else if(userType.equals("3")) {%>
+        <li><a href="#">Manage Accounting</a></li>
+          	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
         <%} %>

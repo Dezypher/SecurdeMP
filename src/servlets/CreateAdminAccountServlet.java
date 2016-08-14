@@ -9,21 +9,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Account;
 import database.DBHelper;
+import models.Account;
 
 /**
- * Servlet implementation class Register
+ * Servlet implementation class CreateAdminAccountServlet
  */
-@WebServlet("/Register")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/CreateAdminAccount")
+public class CreateAdminAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public RegisterServlet() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public CreateAdminAccountServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -36,41 +42,15 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
-        //String cond = request.getParameter("cond");
-        
-        /*
-        if(cond.equals("regs")){
-            request.setAttribute("user", "");
-            request.setAttribute("fname", "");
-            request.setAttribute("lname", "");
-            request.setAttribute("email", "");
-            RequestDispatcher rs = request.getRequestDispatcher("reg.jsp");
-            rs.forward(request, response);
-        } else */
-        //{
-        	//ACCOUNT DETAILS
+		
+		//ACCOUNT DETAILS
+        	String acctype = request.getParameter("acctype");
             String user = request.getParameter("uname");
             String pass = request.getParameter("pass");
             String fname = request.getParameter("fname");
             String mname = request.getParameter("mname");
             String lname = request.getParameter("lname");
             String email = request.getParameter("email");
-        	
-            //BILLING ADDRESS
-            String bHouseNo = request.getParameter("bhouseno");
-            String bStreet = request.getParameter("bstreet");
-            String bSubd = request.getParameter("bsubd");
-            String bCity = request.getParameter("bcity");
-            String bPCode = request.getParameter("bpcode");
-            String bCountry = request.getParameter("bcountry");
-        
-            //BILLING ADDRESS
-            String sHouseNo = request.getParameter("shouseno");
-            String sStreet = request.getParameter("sstreet");
-            String sSubd = request.getParameter("ssubd");
-            String sCity = request.getParameter("scity");
-            String sPCode = request.getParameter("spcode");
-            String sCountry = request.getParameter("scountry");
             
 	        String errorMsg = "";
 	        boolean accepted = true;
@@ -89,19 +69,26 @@ public class RegisterServlet extends HttpServlet {
 	        }
 	        
 	        if(accepted){
-	        	int result = DBHelper.createUser(user, pass, Account.TYPE_CUSTOMER, email, fname, mname, lname);
+	        	int result = 0;
+	        	int acctypeInt = 0;
+	        	try{
+	        		acctypeInt = Integer.parseInt(acctype);
+	        	} catch(NumberFormatException ex) {
+	        		result = 4;
+	        	}
+	        	
+	        	if(acctypeInt == Account.TYPE_PRODUCTMANAGER)
+	        		result = DBHelper.createUser(user, pass, Account.TYPE_PRODUCTMANAGER, email, fname, mname, lname);
+	        	else if(acctypeInt == Account.TYPE_ACCOUNTINGMANAGER)
+		        	result = DBHelper.createUser(user, pass, Account.TYPE_ACCOUNTINGMANAGER, email, fname, mname, lname);
+	        	else result = 4;
 	        	
 	        	if(result == 0) {
-	        		int accountID = DBHelper.getAccountID(user);
-	        		
-	        		DBHelper.addBillingAddress(accountID, bHouseNo, bStreet, bSubd, bCity, bPCode, bCountry);
-	        		DBHelper.addShippingAddress(accountID, sHouseNo, sStreet, sSubd, sCity, sPCode, sCountry);
-	        		
-	                RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
-	                request.setAttribute("errorMessage", "Registration Successful!");
+	        		RequestDispatcher rs = request.getRequestDispatcher("signupadmin.jsp");
+	                request.setAttribute("errorMessage", "Account Creation Successful!");
 	                rs.forward(request, response);
 	        	} else {
-	                RequestDispatcher rs = request.getRequestDispatcher("signup.jsp");
+	                RequestDispatcher rs = request.getRequestDispatcher("signupadmin.jsp");
 	                
 	        		if(result == 1)
 	                    request.setAttribute("errorMessage", "Username taken!");
@@ -109,6 +96,8 @@ public class RegisterServlet extends HttpServlet {
 	                    request.setAttribute("errorMessage", "E-Mail taken!");
 	        		if(result == 3)
 	                    request.setAttribute("errorMessage", "Account taken!");
+	        		if(result == 4)
+	                    request.setAttribute("errorMessage", "Account type not specified!");
 	        		
 	                request.setAttribute("user", user);
 	                request.setAttribute("fname", fname);
@@ -124,9 +113,9 @@ public class RegisterServlet extends HttpServlet {
 	            request.setAttribute("fname", fname);
 	            request.setAttribute("lname", lname);
 	            request.setAttribute("email", email);
-	            RequestDispatcher rs = request.getRequestDispatcher("signup.jsp");
+	            RequestDispatcher rs = request.getRequestDispatcher("signupadmin.jsp");
 	            rs.forward(request, response);
 	        }
-        //}
 	}
+
 }

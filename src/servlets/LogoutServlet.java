@@ -25,6 +25,20 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		Cookie ck = new Cookie("user", "");
+		ck.setMaxAge(0);
+		Cookie ckT = new Cookie("usertype", "");
+		ck.setMaxAge(0);
+		
+		response.addCookie(ck);
+		response.addCookie(ckT);
+		
+		System.out.println("LOGOUT");
+		
+		//RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
+		//rs.forward(request, response);
+		response.sendRedirect("main.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +52,7 @@ public class LogoutServlet extends HttpServlet {
 		
 		System.out.println("LOGOUT");
 		
-		RequestDispatcher rs = request.getRequestDispatcher("login.jsp");
+		RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
 		rs.forward(request, response);
 	}
 

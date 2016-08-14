@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import account.Account;
+import models.Account;
 import database.DBHelper;
 
 /**
  * Servlet implementation class EditProductServlet
  */
-@WebServlet("/EditProductServlet")
+@WebServlet("/EditProduct")
 public class EditProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -44,7 +44,7 @@ public class EditProductServlet extends HttpServlet {
 				doGet(request, response);
 				
 				String id = request.getParameter("productid");
-				String name = request.getParameter("title");
+				String name = request.getParameter("pname");
 				String type = request.getParameter("type");
 				String description = request.getParameter("description");
 				String price = request.getParameter("price");
@@ -72,27 +72,28 @@ public class EditProductServlet extends HttpServlet {
 							fPrice = Float.parseFloat(price);
 							iType = Integer.parseInt(type);
 							int intID = Integer.parseInt(id);
-							
+
 							DBHelper.editProduct(intID, name, description, iType, fPrice, imagePath);
-				            RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
+				           	request.setAttribute("errorMessage", "Successfully updated product!");
+				            RequestDispatcher rs = request.getRequestDispatcher("editproduct.jsp?productid=" + id);
 				            rs.forward(request, response);
 						} catch (NumberFormatException ex) {
 							ex.printStackTrace();
 							System.out.println("Invalid price input!");
 				           	request.setAttribute("errorMessage", "Price has to be a number!");
-				   	   		RequestDispatcher rs = request.getRequestDispatcher("add.jsp");
+				   	   		RequestDispatcher rs = request.getRequestDispatcher("editproduct.jsp?productid=" + id);
 				   	   		rs.forward(request, response);
 						}
 		        	} else {
 		        		System.out.println("Account has no authorization to create a product!");
 		               	request.setAttribute("errorMessage", "You have no authorization to create a product!");
-		       	   		RequestDispatcher rs = request.getRequestDispatcher("add.jsp");
+		       	   		RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
 		       	   		rs.forward(request, response);
 		        	}
 		        } else {
 		        	System.out.println("No product name!");
 		           	request.setAttribute("errorMessage", "Product name cannot be blank!");
-		   	   		RequestDispatcher rs = request.getRequestDispatcher("add.jsp");
+		   	   		RequestDispatcher rs = request.getRequestDispatcher("editproduct.jsp?productid=" + id);
 		   	   		rs.forward(request, response);
 		        }
 	}

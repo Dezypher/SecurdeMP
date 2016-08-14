@@ -3,6 +3,8 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import models.Product;
+
 public class DBHelper
  {	
 	private final static String password = "abcd1234";
@@ -278,9 +280,16 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
-			
-			//ps.executeUpdate(); for updates
+ 				("UPDATE products SET name=?, description=?, type=?, price=?, imagePath=? WHERE id=?;");
+ 			
+ 			ps.setString(1, name);
+ 			ps.setString(2, description);
+ 			ps.setInt(3, type);
+ 			ps.setFloat(4, price);
+ 			ps.setString(5, imagePath);
+ 			ps.setInt(6, productID);
+ 			
+			ps.executeUpdate(); //for updates
  			//ResultSet rs = ps.executeQuery(); for queries
 			
 			con.close();
@@ -506,7 +515,7 @@ public class DBHelper
     	 return true;
      }
      
-     public static int getAccountType(String username) {
+     public static int getAccountType(String uname) {
     	 Connection con;
     	 int accountType = -1;
     	 
@@ -516,15 +525,15 @@ public class DBHelper
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			
  			PreparedStatement ps =con.prepareStatement
- 	 				("SELECT accType FROM account WHERE user = ?;");
- 			
- 			ps.setString(1, username);
+ 	 				("SELECT acctype FROM account WHERE user = '" + uname + "';");
  			
  			ResultSet rs = ps.executeQuery();
  			
  			if(rs.next()) {
  				accountType = rs.getInt(1);
  			} else {
+ 				System.out.println("User not found.");
+ 				
  				return accountType;
  			}
     	 } catch (Exception ex) {
@@ -534,4 +543,73 @@ public class DBHelper
     	 return accountType;
      }
      
+     public static ArrayList<Product> getProducts(int type) {
+    	 Connection con;
+    	 ArrayList<Product> products = new ArrayList<Product>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps =con.prepareStatement
+  	 				("SELECT * FROM products WHERE type = ?;");
+  			
+  			ps.setInt(1, type);
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				Product product = new Product();
+  				
+  				product.setProductID(rs.getInt(1));
+  				product.setName(rs.getString(2));
+  				product.setType(rs.getInt(3));
+  				product.setDescription(rs.getString(4));
+  				product.setPrice(rs.getFloat(5));
+  				product.setImagePath(rs.getString(6));
+  				
+  				products.add(product);
+  			} 
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return products;
+    	 
+     }
+     
+     public static Product getProduct(int id) {
+    	 Connection con;
+    	 Product product = new Product();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps =con.prepareStatement
+  	 				("SELECT * FROM products WHERE id = ?;");
+  			
+  			ps.setInt(1, id);
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			if(rs.next()) {
+  				product = new Product();
+  				
+  				product.setProductID(rs.getInt(1));
+  				product.setName(rs.getString(2));
+  				product.setType(rs.getInt(3));
+  				product.setDescription(rs.getString(4));
+  				product.setPrice(rs.getFloat(5));
+  				product.setImagePath(rs.getString(6));
+  			} 
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return product;
+    	 
+     }
 }

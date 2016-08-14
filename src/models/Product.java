@@ -1,10 +1,11 @@
 package models;
 
 public class Product {
-	public static int BOOTS = 1, SHOES = 2, SANDALS = 3, SLIPPERS = 4;
+	public static int TYPE_BOOTS = 1, TYPE_SHOES = 2, TYPE_SANDALS = 3, TYPE_SLIPPERS = 4;
 	private int productID, type;
 	private float price;
-	private String name, description;
+	private String name, description, imagepath;
+	
 	public int getProductID() {
 		return productID;
 	}
@@ -34,5 +35,11 @@ public class Product {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getImagePath() {
+		return imagepath;
+	}
+	public void setImagePath(String imagepath) {
+		this.imagepath = imagepath;
 	}
 }

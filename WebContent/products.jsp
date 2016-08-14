@@ -1,7 +1,10 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="models.Product"%>
+<%@ page import="database.DBHelper"%>
 
 <html>
 <head>
@@ -9,12 +12,12 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <script src="js/bootstrap.min.js"></script>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-      
+   
    <%
 					Cookie ck[] = request.getCookies();
 					String user = "";
 					String userType = "0";
-	
+					
 					if(ck != null) {
 						for(int i = 0; i < ck.length; i++) {
 							if(ck[i].getName().equals("user")){
@@ -26,7 +29,20 @@
 							}
 						}			
 					}
+					
+					System.out.println("userType: " + userType);
+					
+					int productType = 0;
+					
+					try {
+						productType = Integer.parseInt(request.getParameter("producttype"));
+					} catch (NumberFormatException ex) {
+						ex.printStackTrace();
+					}
+					
+					ArrayList<Product> products = DBHelper.getProducts(productType);
 	%>
+	
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -54,9 +70,12 @@
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>
+      
+      <form method="post" action="Logout" id="logout">
+      </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
-        <% if(user.length() == 0) { %>
+         <% if(user.length() == 0) { %>
         <li><a href="login.jsp">Log In</a></li>
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
@@ -76,50 +95,49 @@
 </div>
 <br/>
 <!-- put contents here -->
+<%if(productType == Product.TYPE_BOOTS) { %>
+	<div>
+		Boots
+	</div>
+<%} else if(productType == Product.TYPE_SANDALS) { %>
+	<div>
+		Sandals
+	</div>
+<%} else if(productType == Product.TYPE_SHOES) { %>
+	<div>
+		Shoes
+	</div>
+<%} else if(productType == Product.TYPE_SLIPPERS) { %>
+	<div>
+		Slippers
+	</div>
+<% } %>
 
 <div class="container">
-   <div class="panel panel-default">
-      <div class="page-header">
-    <h3>Add New Product</h3>
-  </div>
-  <form action="AddProduct" method="post" id="addproduct">
-  		<div>${errorMessage}</div>
-  <div class="row">
-     <div class="col-xs-3">
-        <input type="text" name="pname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-3">
-        <input type="number" name="price" class="form-control" placeholder="Price" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row">
-     <div class="col-xs-5">
-        <input type="text" name="description" class="form-control" placeholder="Description" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" name="stock" class="form-control" placeholder="Stock" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row"></div>
-    <div class="col-xs-5">
-        <input type="text" name="imagepath" class="form-control" placeholder="Image Link" aria-describedby="basic-addon1">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" name="type" class="form-control" placeholder="Type" aria-describedby="basic-addon1">
-    </div>
-  </div></br>
-  
-  <button onclick="Submit()" class="btn btn-primary" type="button">Submit</button>
-	
-	</form>
+   <div class="row">
+      <!--Duplicate this part -->
+      <% for(int i = 0; i < products.size(); i++) { %>
+      
+	      <div class="col-xs-3">
+	         <div class="panel panel-default">
+	            <img src="<%=products.get(i).getImagePath()%>" onclick="" />
+	            <h5><%=products.get(i).getName()%></h5>
+	            <p class="text-muted">Php <%=products.get(i).getPrice()%></p>
+	            <p class="text-muted"><small><%=products.get(i).getDescription()%></small></p>
+	         </div>
+	      </div>
+      
+      <% } %>
+      <!--Duplicate until here -->
    </div>
+   
 </div>
   
-  <script>
-  	function Submit(){
-  		document.forms["addproduct"].submit();
-  	}
-  </script>
+    <script>
+    	function signup(){
+    		document.forms["logout"].submit();
+    	}
+    </script>
 
 <footer class="footer">
 <div class="container">

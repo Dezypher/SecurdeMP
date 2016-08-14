@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import account.Account;
+import models.Account;
 import database.DBHelper;
 
 /**
@@ -43,7 +43,7 @@ public class AddProductServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
-		String name = request.getParameter("title");
+		String name = request.getParameter("pname");
 		String type = request.getParameter("type");
 		String description = request.getParameter("description");
 		String price = request.getParameter("price");

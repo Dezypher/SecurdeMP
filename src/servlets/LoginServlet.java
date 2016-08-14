@@ -30,15 +30,23 @@ public class LoginServlet extends HttpServlet {
         
         String user = request.getParameter("uname");
         String pass = request.getParameter("pass");
-        
-        Cookie ck = new Cookie("user", user);
-        ck.setMaxAge(100000);
-        
         if(DBHelper.checkUser(user, pass))
-        {
+        {	
+            
+            Cookie ck = new Cookie("user", user);
+            ck.setMaxAge(100000);
+            
+            String userType = "" + DBHelper.getAccountType(user);
+            
+            Cookie ckT = new Cookie("usertype", userType);
+            ck.setMaxAge(100000);
+            
+        	
             response.addCookie(ck);
-            RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
-            rs.forward(request, response);
+            response.addCookie(ckT);
+            //RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
+            //rs.forward(request, response);
+            response.sendRedirect("main.jsp");
         }
         else
         {

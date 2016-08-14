@@ -20,14 +20,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="pull-left" href="#"><img src="logo.png"></a>
+      <a class="pull-left" href="main.jsp"><img src="logo.png"></a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Boots</a></li>
-        <li><a href="#">Shoes</a></li>
-        <li><a href="#">Sandals</a></li>
-        <li><a href="#">Slippers</a></li>
+        <li><a href="products.jsp?producttype=1">Boots</a></li>
+        <li><a href="products.jsp?producttype=2">Shoes</a></li>
+        <li><a href="products.jsp?producttype=3">Sandals</a></li>
+        <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" role="search">
@@ -56,10 +56,12 @@
     <h3>New Manager</h3>
   </div>
   <div>${errorMessage}</div>
-  <form method="post" action="Register" id="signup">
+  <form method="post" action="CreateAdminAccount" id="signup">
   	<div class="row">
-	    <label class="radio-inline"><input type="radio" name="optradio">Product Manager</label>
-		<label class="radio-inline"><input type="radio" name="optradio">Accounting Manager</label>
+	    <label class="radio-inline"><input type="radio" name="acctype" onclick = \"getAnswer('2') value="2">
+	    						Product Manager</label>
+		<label class="radio-inline"><input type="radio" name="acctype" onclick = \"getAnswer('3') value="3">
+								Accounting Manager</label>
     </div>
 		  
 	  <div class="row">
@@ -88,7 +90,7 @@
 	  </div><br/>
 	  
 	  <!-- edit onclick -->
-	  <button onclick="" class="btn btn-primary" type="button">Submit</button>
+	  <button onclick="signup()" class="btn btn-primary" type="button">Submit</button>
 	</form>
       </div>
    </div>

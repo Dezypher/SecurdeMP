@@ -63,7 +63,7 @@ public class UpdateCartItemServlet extends HttpServlet {
 			if(result) {
 				//Return to main products page
 			} else {
-				//send error
+				//send error, Redirect to Product Page
 			}
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();

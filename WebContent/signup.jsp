@@ -20,14 +20,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="pull-left" href="#"><img src="logo.png"></a>
+      <a class="pull-left" href="main.jsp"><img src="logo.png"></a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Boots</a></li>
-        <li><a href="#">Shoes</a></li>
-        <li><a href="#">Sandals</a></li>
-        <li><a href="#">Slippers</a></li>
+        <li><a href="products.jsp?producttype=1">Boots</a></li>
+        <li><a href="products.jsp?producttype=2">Shoes</a></li>
+        <li><a href="products.jsp?producttype=3">Sandals</a></li>
+        <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" role="search">
