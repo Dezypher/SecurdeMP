@@ -107,6 +107,15 @@
     </div>
   </div><br/>
   <div class="row">
+      <div class="col-xs-5">
+      <h5>Product Type</h5>
+      <label class="radio-inline"><input type="radio" name="type">Boots</label>
+      <label class="radio-inline"><input type="radio" name="type">Shoes</label>
+      <label class="radio-inline"><input type="radio" name="type">Sandals</label>
+      <label class="radio-inline"><input type="radio" name="type">Slippers</label>
+      </div>
+   </div><br/>
+  <div class="row">
      <div class="col-xs-5">
         <input type="text" name="description" class="form-control" placeholder="Description" aria-describedby="basic-addon1"
         	value="<%=product.getDescription()%>">
@@ -115,14 +124,10 @@
         <input type="text" name="stock" class="form-control" placeholder="Stock" aria-describedby="basic-addon1">
     </div>
   </div><br/>
-  <div class="row"></div>
+  <div class="row">
     <div class="col-xs-5">
         <input type="text" name="imagepath" class="form-control" placeholder="Image Link" aria-describedby="basic-addon1"
         	value="<%=product.getImagePath()%>">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" name="type" class="form-control" placeholder="Type" aria-describedby="basic-addon1"
-        	value="<%=product.getType()%>">
     </div>
   </div></br>
   
