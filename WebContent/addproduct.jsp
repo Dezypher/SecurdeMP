@@ -42,10 +42,10 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="products.jsp?producttype=1">Boots</a></li>
-        <li><a href="products.jsp?producttype=2">Shoes</a></li>
-        <li><a href="products.jsp?producttype=3">Sandals</a></li>
-        <li><a href="products.jsp?producttype=4">Slippers</a></li>
+        <li><a href="products.jsp?producttype=1">Catalog</a></li>
+        <li><a href="products.jsp?producttype=2">Add</a></li>
+        <li><a href="products.jsp?producttype=3">Edit</a></li>
+        <li><a href="products.jsp?producttype=4">Delete</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" role="search">

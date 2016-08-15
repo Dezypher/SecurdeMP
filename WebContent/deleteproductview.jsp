@@ -89,52 +89,31 @@
 <br/>
 <!-- put contents here -->
 
+
 <div class="container">
-   <div class="panel panel-default">
-      <div class="page-header">
-    <h3>Edit Product</h3>
-  </div>
-  <form action="EditProduct" method="post" id="editproduct">
-  		<div>${errorMessage}</div>
-  <div class="row">
-     <div class="col-xs-3">
-        <input type="text" name="pname" class="form-control" placeholder="Name" aria-describedby="basic-addon1"
-        	value="<%=product.getName()%>">
-    </div>
-    <div class="col-xs-3">
-        <input type="number" name="price" class="form-control" placeholder="Price" aria-describedby="basic-addon1"
-        	value="<%=product.getPrice()%>">
-    </div>
-  </div><br/>
-  <div class="row">
-     <div class="col-xs-5">
-        <input type="text" name="description" class="form-control" placeholder="Description" aria-describedby="basic-addon1"
-        	value="<%=product.getDescription()%>">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" name="stock" class="form-control" placeholder="Stock" aria-describedby="basic-addon1">
-    </div>
-  </div><br/>
-  <div class="row"></div>
-    <div class="col-xs-5">
-        <input type="text" name="imagepath" class="form-control" placeholder="Image Link" aria-describedby="basic-addon1"
-        	value="<%=product.getImagePath()%>">
-    </div>
-    <div class="col-xs-1">
-        <input type="text" name="type" class="form-control" placeholder="Type" aria-describedby="basic-addon1"
-        	value="<%=product.getType()%>">
-    </div>
-  </div></br>
-  
-  <button onclick="Submit()" class="btn btn-primary" type="button">Submit</button>
-		<input type="hidden" name="productid" value="<%=productID%>">
-	</form>
+<h3>Select product to Delete:</h3>
+   <div class="row">
+      <div class="col-xs-3">
+         <div class="panel panel-default">
+            <img src="slipp.png" onclick="Submit()" />
+            <h5>Turtle shell slippers</h5>
+         </div>
+      </div>
+      <!--Duplicate this part -->
+      <div class="col-xs-3">
+         <div class="panel panel-default">
+            <img src="boots.png" onclick="Submit()" />
+            <h5>Burnt Boots</h5>
+         </div>
+      </div>
+      <!--Duplicate until here -->
    </div>
+   
 </div>
   
   <script>
   	function Submit(){
-  		document.forms["editproduct"].submit();
+  		alert("delete");
   	}
   </script>
 
