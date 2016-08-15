@@ -2,6 +2,9 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="models.Product"%>
+<%@ page import="models.Address"%>
+<%@ page import="database.DBHelper"%>
 
 <html>
 <head>
@@ -14,7 +17,7 @@
 					Cookie ck[] = request.getCookies();
 					String user = "";
 					String userType = "0";
-					
+	
 					if(ck != null) {
 						for(int i = 0; i < ck.length; i++) {
 							if(ck[i].getName().equals("user")){
@@ -27,7 +30,19 @@
 						}			
 					}
 					
-					System.out.println("userType: " + userType);
+					int productID = 0;
+					
+					try {
+						productID = Integer.parseInt(request.getParameter("productid"));
+					} catch (NumberFormatException ex) {
+					}
+					
+					Product product = DBHelper.getProduct(productID);
+					
+					int accountID = DBHelper.getAccountID(user);
+					
+					Address shippingAddress = DBHelper.getShippingAddress(accountID);
+					Address billingAddress = DBHelper.getBillingAddress(accountID);
 	%>
 	
 </head>
@@ -67,9 +82,9 @@
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
           	<%if(userType.equals("2")) {%>
-        <li><a href="#">Manage Products</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
           	<%} else if(userType.equals("3")) {%>
-        <li><a href="#">Manage Accounting</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
           	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
@@ -86,32 +101,38 @@
    <div class="row">
       <div class="col-xs-3">
          <div class="panel panel-default">
-            <img src="slipp.png" />
+            <img class="thumb1" src="<%=product.getImagePath()%>" />
             
          </div>
       </div>
       <div class="col-xs-3">
-            <h3>Turtle shell slippers</h3>
-            <p class="text-muted">Php 999.00</p>
+            <h3><%=product.getName()%></h3>
+            <p class="text-muted">Php <%=product.getPrice()%></p>
            
             <br/><br/>
-            <p class="text-muted"><small>Super hard slippers with materials from endangered turtle species. Made in China.</small></p>
+            <p class="text-muted"><small><%=product.getDescription()%></small></p>
 
             <br/><br/>
             <h4>Shipping Address</h4>
-            <p>B7 L3 Villa Castillo San Pedro, Laguna</p>
+            <p><%=shippingAddress.getAddress()%></p>
             <br/>
             <h4>Billing Addess</h4>
-            <p>B7 L3 Villa Castillo San Pedro, Laguna</p>
+            <p><%=billingAddress.getAddress()%></p>
             <br/>
-            <h4>Credit Card Credentials</h4>
-               <input type="text" class="form-control" placeholder="Credit Card Number" aria-describedby="basic-addon1">
-               <br/>
-               <input type="text" class="form-control" placeholder="CVC" aria-describedby="basic-addon1">
-               <br/>
-               <input type="text" class="form-control" placeholder="Expiration Date" aria-describedby="basic-addon1">
-            <br/>
-            <button onclick="Submit()" class="btn btn-primary" type="button">Buy</button>
+            
+            <form action="Buy" method="post" id="buyProduct">
+	            <h4>Credit Card Credentials</h4>
+	  				<div>${errorMessage}</div>
+	               <input type="text" name="ccnumber" class="form-control" placeholder="Credit Card Number" aria-describedby="basic-addon1">
+	               <br/>
+	               <input type="text" name="cvc" class="form-control" placeholder="CVC" aria-describedby="basic-addon1">
+	               <br/>
+	               <input type="text" name="expdate" class="form-control" placeholder="Expiration Date" aria-describedby="basic-addon1">
+	            <br/>
+	            <input type="hidden" name="productid" value="<%=product.getProductID()%>">
+	            
+	            <button onclick="Submit()" class="btn btn-primary" type="button">Buy</button>
+            </form>
       </div>
 
    </div>
@@ -121,9 +142,18 @@
   
     <script>
     	function Submit(){
-    		alert("buy");
+    		document.forms["buyProduct"].submit();
     	}
     </script>
+
+
+<style>
+	.thumb1 { 
+	background: url(blah.jpg) 50% 50% no-repeat; /* 50% 50% centers image in div */
+		width: 250px;
+		height: 250px;
+	}
+</style>
 
 <footer class="footer">
 <div class="container">

@@ -122,7 +122,7 @@
 	      <input type="text" name="scity" class="form-control" placeholder="City" aria-describedby="basic-addon1">
 	    </div>
 	    <div class="col-xs-3">
-	      <input type="text" name="bcountry" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
+	      <input type="text" name="scountry" class="form-control" placeholder="Country" aria-describedby="basic-addon1">
 	    </div>
 	  </div><br/>
 	

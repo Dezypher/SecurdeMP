@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Account;
 import database.DBHelper;
+import models.Account;
 
 /**
- * Servlet implementation class DeleteProduct
+ * Servlet implementation class SendReview
  */
-@WebServlet("/DeleteProduct")
-public class DeleteProductServlet extends HttpServlet {
+@WebServlet("/SendReview")
+public class SendReviewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteProductServlet() {
+    public SendReviewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,7 +43,9 @@ public class DeleteProductServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 
-		String id = request.getParameter("productid");
+		String productID = request.getParameter("productid");
+		String review = request.getParameter("review");
+		String rating = request.getParameter("rating");
 		
 		Cookie ck[] = request.getCookies();
 
@@ -53,22 +55,20 @@ public class DeleteProductServlet extends HttpServlet {
 			if(ck[i].getName().equals("user")){
 				user = ck[i].getValue();
 			}
-		}	
+		}
 		
-		
-		int accountType = DBHelper.getAccountType(user);
+		try {
+			 float fRating = Float.parseFloat(rating);
+			 int iProductID = Integer.parseInt(productID);
+			 
+			 DBHelper.addReview(user, iProductID, review, fRating);
+			 
+	   	   	RequestDispatcher rs = request.getRequestDispatcher("viewproduct.jsp?productid=" + productID);
+	   	   	rs.forward(request, response);
+			 
+		} catch (Exception ex) {
 			
-		if(accountType == Account.TYPE_PRODUCTMANAGER ||
-		   accountType == Account.TYPE_ADMINISTRATOR) {
-			DBHelper.deleteProduct(Integer.parseInt(id));
-		    RequestDispatcher rs = request.getRequestDispatcher("viewproductadmin.jsp");
-		    rs.forward(request, response);
-        } else {
-        	System.out.println("Account has no authorization to create a product!");
-            request.setAttribute("errorMessage", "You have no authorization to delete a product!");
-       	   	RequestDispatcher rs = request.getRequestDispatcher("viewproductadmin.jsp");
-       	   	rs.forward(request, response);
-        }
+		}
 	}
 
 }

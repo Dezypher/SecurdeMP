@@ -42,10 +42,10 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="products.jsp?producttype=1">Catalog</a></li>
-        <li><a href="products.jsp?producttype=2">Add</a></li>
-        <li><a href="products.jsp?producttype=3">Edit</a></li>
-        <li><a href="products.jsp?producttype=4">Delete</a></li>
+        <li><a href="products.jsp?producttype=1">Boots</a></li>
+        <li><a href="products.jsp?producttype=2">Shoes</a></li>
+        <li><a href="products.jsp?producttype=3">Sandals</a></li>
+        <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
       <form class="navbar-form navbar-left" role="search">
@@ -61,9 +61,9 @@
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
           	<%if(userType.equals("2")) {%>
-        <li><a href="#">Manage Products</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
           	<%} else if(userType.equals("3")) {%>
-        <li><a href="#">Manage Accounting</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
           	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
@@ -95,10 +95,10 @@
   <div class="row">
       <div class="col-xs-5">
       <h5>Product Type</h5>
-      <label class="radio-inline"><input type="radio" name="type">Boots</label>
-      <label class="radio-inline"><input type="radio" name="type">Shoes</label>
-      <label class="radio-inline"><input type="radio" name="type">Sandals</label>
-      <label class="radio-inline"><input type="radio" name="type">Slippers</label>
+      <label class="radio-inline"><input type="radio" name="type" onclick = \"getAnswer('1') value="1" checked="checked">Boots</label>
+      <label class="radio-inline"><input type="radio" name="type" onclick = \"getAnswer('2') value="2">Shoes</label>
+      <label class="radio-inline"><input type="radio" name="type" onclick = \"getAnswer('3') value="3">Sandals</label>
+      <label class="radio-inline"><input type="radio" name="type" onclick = \"getAnswer('4') value="4">Slippers</label>
       </div>
    </div><br/>
   <div class="row">

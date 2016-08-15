@@ -72,7 +72,7 @@ public class AddProductServlet extends HttpServlet {
 					iType = Integer.parseInt(type);
 					
 					DBHelper.createProduct(name, description, iType, fPrice, imagePath);
-		            RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
+		            RequestDispatcher rs = request.getRequestDispatcher("viewproductadmin.jsp");
 		            rs.forward(request, response);
 				} catch (NumberFormatException ex) {
 					ex.printStackTrace();

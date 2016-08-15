@@ -46,4 +46,12 @@ public class Address {
 	public void setHouseNum(String houseNum) {
 		this.houseNum = houseNum;
 	}
+	
+	public String getAddress() {
+		String address = "";
+		
+		address= houseNum + " " + street + ", " + subdv + ", " + city + " (" + postcode + "), " + country;
+		
+		return address;
+	}
 }

@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Account;
 import database.DBHelper;
+import models.Account;
 
 /**
- * Servlet implementation class DeleteProduct
+ * Servlet implementation class IncreaseSaleServlet
  */
-@WebServlet("/DeleteProduct")
-public class DeleteProductServlet extends HttpServlet {
+@WebServlet("/Buy")
+public class BuyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteProductServlet() {
+    public BuyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,8 +42,10 @@ public class DeleteProductServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-
-		String id = request.getParameter("productid");
+		String productID = request.getParameter("productid");
+		String ccnumber = request.getParameter("ccnumber");
+		String cvc = request.getParameter("cvc");
+		String expdate = request.getParameter("expdate");
 		
 		Cookie ck[] = request.getCookies();
 
@@ -54,20 +56,24 @@ public class DeleteProductServlet extends HttpServlet {
 				user = ck[i].getValue();
 			}
 		}	
-		
-		
-		int accountType = DBHelper.getAccountType(user);
-			
-		if(accountType == Account.TYPE_PRODUCTMANAGER ||
-		   accountType == Account.TYPE_ADMINISTRATOR) {
-			DBHelper.deleteProduct(Integer.parseInt(id));
-		    RequestDispatcher rs = request.getRequestDispatcher("viewproductadmin.jsp");
-		    rs.forward(request, response);
+
+		if(ccnumber.length() == 16) {
+			try {
+				int prodID = Integer.parseInt(productID);
+				
+				DBHelper.increaseSales(prodID, 1);
+
+                RequestDispatcher rs = request.getRequestDispatcher("buyproduct.jsp?productid=" + productID);
+                request.setAttribute("errorMessage", "Transaction Successful!");
+                rs.forward(request, response);
+			} catch (NumberFormatException ex) {
+	           	request.setAttribute("errorMessage", "Something went horribly wrong.");
+			}
         } else {
-        	System.out.println("Account has no authorization to create a product!");
-            request.setAttribute("errorMessage", "You have no authorization to delete a product!");
-       	   	RequestDispatcher rs = request.getRequestDispatcher("viewproductadmin.jsp");
-       	   	rs.forward(request, response);
+        	System.out.println("CCNumber too Long!");
+           	request.setAttribute("errorMessage", "Invalid Credit Card Number!");
+   	   		RequestDispatcher rs = request.getRequestDispatcher("add.jsp");
+   	   		rs.forward(request, response);
         }
 	}
 

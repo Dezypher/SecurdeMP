@@ -2,6 +2,10 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="models.Product"%>
+<%@ page import="models.Review"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="database.DBHelper"%>
 
 <html>
 <head>
@@ -14,7 +18,7 @@
 					Cookie ck[] = request.getCookies();
 					String user = "";
 					String userType = "0";
-					
+	
 					if(ck != null) {
 						for(int i = 0; i < ck.length; i++) {
 							if(ck[i].getName().equals("user")){
@@ -27,7 +31,16 @@
 						}			
 					}
 					
-					System.out.println("userType: " + userType);
+					int productID = 0;
+					
+					try {
+						productID = Integer.parseInt(request.getParameter("productid"));
+					} catch (NumberFormatException ex) {
+						ex.printStackTrace();
+					}
+					
+					Product product = DBHelper.getProduct(productID);
+					ArrayList<Review> reviews = DBHelper.getReviews(productID);
 	%>
 	
 </head>
@@ -67,9 +80,9 @@
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
           	<%if(userType.equals("2")) {%>
-        <li><a href="#">Manage Products</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
           	<%} else if(userType.equals("3")) {%>
-        <li><a href="#">Manage Accounting</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
           	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
@@ -85,31 +98,67 @@
 
 <div class="container">
    <div class="row">
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="slipp.png" onclick="" />
-            <h5>Turtle shell slippers</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Super hard slippers with materials from endangered turtle species. Made in China.</small></p>
-         </div>
-      </div>
-      <!--Duplicate this part -->
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="boots.png" onclick="" />
-            <h5>Burnt Boots</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Boots from burned street dogs. Made in China.</small></p>
-         </div>
-      </div>
-      <!--Duplicate until here -->
+		      <div class="col-xs-3">
+		         <div class="panel panel-default">
+		            <img src="<%=product.getImagePath()%>" onclick="" />
+		            <h5><%=product.getName()%></h5>
+		            <p class="text-muted">Php <%=product.getPrice()%></p>
+		            <p class="text-muted"><small><%=product.getDescription()%></small></p>
+		         </div>
+		      </div>
    </div>
    
+   <% if(userType.equals("1")){%>
+	   <div><a href=<%="buyproduct.jsp?productid=" + product.getProductID()%>>
+	  	<button class="btn btn-primary" type="button">Buy</button>
+	  </a></div>
+	<% } else { %>
+		<div>Log in to buy this product!</div>
+	<% } %>
+   
+	<div><h2>Reviews</h2></div>
+  	<% for (int i = 0; i < reviews.size(); i++) { %>
+	   <div>
+	   		<div><%=reviews.get(i).getAuthor()%>Rating: <%=reviews.get(i).getRating()%>/5.0</div><br/>
+	   		
+	   		<div><%=reviews.get(i).getReview()%></div>
+	   </div>
+	   </br>
+   <% } %>
+   
+   <% if(userType.equals("1")) { %>
+   <div>
+   		<div>Write your review: </div><br/>
+   		<form action="SendReview" method="post" id="sendReview">
+        	<input type="text" name="review" class="form-control" placeholder="Review..." aria-describedby="basic-addon1">
+        	<br/>
+        		<div class="row">
+			      <div class="col-xs-5">
+			      <h5>Rating</h5>
+			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('1') value="1">1</label>
+			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('2') value="2">2</label>
+			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('3') value="3">3</label>
+			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('4') value="4">4</label>
+			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('5') value="5" checked="checked">5</label>
+			      </div>
+			   </div>
+        	<input type="hidden" name="author" value="<%=user%>">
+        	<input type="hidden" name="productid" value="<%=productID%>">
+        </br>
+  		<button onclick="sendReview()" class="btn btn-primary" type="button">Submit</button>
+  		</form>
+  		<br/>
+   </div>
+   <% } %>
 </div>
   
     <script>
     	function signup(){
     		document.forms["logout"].submit();
+    	}
+
+    	function sendReview(){
+    		document.forms["sendReview"].submit();
     	}
     </script>
 

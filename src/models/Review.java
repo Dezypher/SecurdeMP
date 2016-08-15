@@ -2,7 +2,7 @@ package models;
 
 public class Review {
 	private int reviewID, authorID, productID;
-	private String review;
+	private String review, author;
 	private float rating;
 	
 	public int getReviewID() {
@@ -28,6 +28,12 @@ public class Review {
 	}
 	public void setReview(String review) {
 		this.review = review;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getAuthor() {
+		return author;
 	}
 	public float getRating() {
 		return rating;

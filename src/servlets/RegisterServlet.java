@@ -97,7 +97,7 @@ public class RegisterServlet extends HttpServlet {
 	        		DBHelper.addBillingAddress(accountID, bHouseNo, bStreet, bSubd, bCity, bPCode, bCountry);
 	        		DBHelper.addShippingAddress(accountID, sHouseNo, sStreet, sSubd, sCity, sPCode, sCountry);
 	        		
-	                RequestDispatcher rs = request.getRequestDispatcher("index.jsp");
+	                RequestDispatcher rs = request.getRequestDispatcher("login.jsp");
 	                request.setAttribute("errorMessage", "Registration Successful!");
 	                rs.forward(request, response);
 	        	} else {

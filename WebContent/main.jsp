@@ -2,6 +2,9 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="models.Product"%>
+<%@ page import="database.DBHelper"%>
 
 <html>
 <head>
@@ -28,6 +31,16 @@
 					}
 					
 					System.out.println("userType: " + userType);
+					
+					int productType = 0;
+					
+					try {
+						productType = Integer.parseInt(request.getParameter("producttype"));
+					} catch (NumberFormatException ex) {
+						ex.printStackTrace();
+					}
+					
+					ArrayList<Product> products = DBHelper.getProducts(productType);
 	%>
 	
 </head>
@@ -67,9 +80,9 @@
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
           	<%if(userType.equals("2")) {%>
-        <li><a href="#">Manage Products</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
           	<%} else if(userType.equals("3")) {%>
-        <li><a href="#">Manage Accounting</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
           	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
@@ -84,24 +97,24 @@
 <!-- put contents here -->
 
 <div class="container">
+		<div>
+			<h2>New Products</h2>
+		</div>
+		<br/>
    <div class="row">
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="slipp.png" onclick="" />
-            <h5>Turtle shell slippers</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Super hard slippers with materials from endangered turtle species. Made in China.</small></p>
-         </div>
-      </div>
       <!--Duplicate this part -->
-      <div class="col-xs-3">
-         <div class="panel panel-default">
-            <img src="boots.png" onclick="" />
-            <h5>Burnt Boots</h5>
-            <p class="text-muted">Php 999.00</p>
-            <p class="text-muted"><small>Boots from burned street dogs. Made in China.</small></p>
-         </div>
-      </div>
+      <% for(int i = 0; i < products.size(); i++) { %>
+      	<a href=<%="viewproduct.jsp?productid=" + products.get(i).getProductID()%>>
+		      <div class="col-xs-3">
+		         <div class="panel panel-default">
+	            	<img class="thumb1" src="<%=products.get(i).getImagePath()%>" onclick="" />
+		            <h5><%=products.get(i).getName()%></h5>
+		            <p class="text-muted">Php <%=products.get(i).getPrice()%></p>
+		            <p class="text-muted"><small><%=products.get(i).getDescription()%></small></p>
+		         </div>
+		      </div>
+      	</a>
+      <% } %>
       <!--Duplicate until here -->
    </div>
    
@@ -112,6 +125,14 @@
     		document.forms["logout"].submit();
     	}
     </script>
+
+<style>
+	.thumb1 { 
+	background: url(blah.jpg) 50% 50% no-repeat; /* 50% 50% centers image in div */
+		width: 250px;
+		height: 250px;
+	}
+</style>
 
 <footer class="footer">
 <div class="container">

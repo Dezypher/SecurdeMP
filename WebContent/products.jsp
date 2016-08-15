@@ -80,9 +80,9 @@
         <li><a href="signup.jsp">Sign Up</a></li>   
           <%} else { %>
           	<%if(userType.equals("2")) {%>
-        <li><a href="#">Manage Products</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
           	<%} else if(userType.equals("3")) {%>
-        <li><a href="#">Manage Accounting</a></li>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
           	<%} %>
         <li><a href="#"><%=user%></a></li>
         <li><a href="Logout">Logout</a></li>   
@@ -95,38 +95,38 @@
 </div>
 <br/>
 <!-- put contents here -->
-<%if(productType == Product.TYPE_BOOTS) { %>
-	<div>
-		Boots
-	</div>
-<%} else if(productType == Product.TYPE_SANDALS) { %>
-	<div>
-		Sandals
-	</div>
-<%} else if(productType == Product.TYPE_SHOES) { %>
-	<div>
-		Shoes
-	</div>
-<%} else if(productType == Product.TYPE_SLIPPERS) { %>
-	<div>
-		Slippers
-	</div>
-<% } %>
-
 <div class="container">
+	<%if(productType == Product.TYPE_BOOTS) { %>
+		<div>
+			<h2>Boots</h2>
+		</div>
+	<%} else if(productType == Product.TYPE_SANDALS) { %>
+		<div>
+			<h2>Sandals</h2>
+		</div>
+	<%} else if(productType == Product.TYPE_SHOES) { %>
+		<div>
+			<h2>Shoes</h2>
+		</div>
+	<%} else if(productType == Product.TYPE_SLIPPERS) { %>
+		<div>
+			<h2>Slippers</h2>
+		</div>
+	<% } %>
+	<br/>
    <div class="row">
       <!--Duplicate this part -->
       <% for(int i = 0; i < products.size(); i++) { %>
-      
-	      <div class="col-xs-3">
-	         <div class="panel panel-default">
-	            <img src="<%=products.get(i).getImagePath()%>" onclick="" />
-	            <h5><%=products.get(i).getName()%></h5>
-	            <p class="text-muted">Php <%=products.get(i).getPrice()%></p>
-	            <p class="text-muted"><small><%=products.get(i).getDescription()%></small></p>
-	         </div>
-	      </div>
-      
+      	<a href=<%="viewproduct.jsp?productid=" + products.get(i).getProductID()%>>
+		      <div class="col-xs-3">
+		         <div class="panel panel-default">
+	            	<img class="thumb1" src="<%=products.get(i).getImagePath()%>" onclick="" />
+		            <h5><%=products.get(i).getName()%></h5>
+		            <p class="text-muted">Php <%=products.get(i).getPrice()%></p>
+		            <p class="text-muted"><small><%=products.get(i).getDescription()%></small></p>
+		         </div>
+		      </div>
+      	</a>
       <% } %>
       <!--Duplicate until here -->
    </div>
@@ -138,6 +138,14 @@
     		document.forms["logout"].submit();
     	}
     </script>
+
+<style>
+	.thumb1 { 
+	background: url(blah.jpg) 50% 50% no-repeat; /* 50% 50% centers image in div */
+		width: 250px;
+		height: 250px;
+	}
+</style>
 
 <footer class="footer">
 <div class="container">

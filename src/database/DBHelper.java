@@ -3,7 +3,9 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import models.Address;
 import models.Product;
+import models.Review;
 
 public class DBHelper
  {	
@@ -177,9 +179,19 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+			          ("INSERT INTO shipping_addr"
+			          + "(accountID, houseNo, street, subdivision, city, postalCode, country) VALUES"
+			          + "(?,?,?,?,?,?,?)");
 			
-			//ps.executeUpdate(); for updates/inserts
+ 			ps.setInt	(1, accountID);
+ 			ps.setString(2, houseNo);
+ 			ps.setString(3, street);
+ 			ps.setString(4, subdivision);
+ 			ps.setString(5, city);
+ 			ps.setString(6, postalCode);
+ 			ps.setString(7, country);
+ 			
+			ps.executeUpdate(); //for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
 			
 			con.close();
@@ -230,10 +242,19 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+			          ("INSERT INTO billing_addr"
+			          + "(accountID, houseNo, street, subdivision, city, postalCode, country) VALUES"
+			          + "(?,?,?,?,?,?,?)");
 			
-			//ps.executeUpdate(); for updates/inserts
- 			//ResultSet rs = ps.executeQuery(); for queries
+			ps.setInt	(1, accountID);
+			ps.setString(2, houseNo);
+			ps.setString(3, street);
+			ps.setString(4, subdivision);
+			ps.setString(5, city);
+			ps.setString(6, postalCode);
+			ps.setString(7, country);
+			
+			ps.executeUpdate(); //for updates/inserts
 			
 			con.close();
     	 } catch (Exception ex) {
@@ -254,7 +275,7 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("DELETE FROM products WHERE productID = ?");
+ 				("DELETE FROM products WHERE id = ?");
  			
  			ps.setInt(1, productID);
 			
@@ -389,6 +410,70 @@ public class DBHelper
     	 return true;
      }
      
+     public static Address getBillingAddress(int accountID) {
+    	 Connection con;
+    	 Address address = new Address();
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("SELECT * FROM billing_addr WHERE accountID = ?");
+ 			
+ 			ps.setInt(1, accountID);
+			
+ 			ResultSet rs = ps.executeQuery();
+ 			
+ 			if(rs.next()) {
+				address.setHouseNum(rs.getString(2));
+				address.setStreet(rs.getString(3));
+				address.setSubdv(rs.getString(4));
+				address.setCity(rs.getString(5));
+				address.setPostcode(rs.getString(6));
+				address.setCountry(rs.getString(7));
+ 			}
+			
+			con.close();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 
+    	 return address;
+     }
+     
+     public static Address getShippingAddress(int accountID) {
+    	 Connection con;
+    	 Address address = new Address();
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("SELECT * FROM shipping_addr WHERE accountID = ?");
+ 			
+ 			ps.setInt(1, accountID);
+			
+ 			ResultSet rs = ps.executeQuery();
+ 			
+ 			if(rs.next()) {
+				address.setHouseNum(rs.getString(2));
+				address.setStreet(rs.getString(3));
+				address.setSubdv(rs.getString(4));
+				address.setCity(rs.getString(5));
+				address.setPostcode(rs.getString(6));
+				address.setCountry(rs.getString(7));
+ 			}
+			
+			con.close();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 
+    	 return address;
+     }
+     
      // ! ---------  NOT DONE ---------- !
      /*
       *  Delete all rows with the given accountID
@@ -445,8 +530,7 @@ public class DBHelper
     	 return true;
      }
      
-     // ! ---------  NOT DONE ---------- !
-     public static boolean addReview(int authorID, int productID, String review, int rating) {
+     public static boolean increaseSales(int productID, int amt) {
     	 Connection con;
     	 
     	 try {
@@ -454,9 +538,58 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("QUERY/UPDATE STATEMENT HERE");
+ 				("SELECT amountSold FROM sales WHERE productID = ?;");
 			
-			//ps.executeUpdate(); for updates/inserts
+ 			ps.setInt(1, productID);
+
+ 			ResultSet rs = ps.executeQuery();
+			
+ 			int currAmt = 0;
+ 			
+			if(rs.next()) {
+				currAmt = rs.getInt(1);
+			}
+			
+			currAmt += amt;
+			
+			ps = con.prepareStatement
+					("UPDATE sales SET amountSold = ? WHERE productID = ?;");
+			
+			ps.setInt(1, currAmt);
+			ps.setInt(2, productID);
+			
+			ps.executeUpdate();
+			
+			con.close();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+     }
+     
+     // ! ---------  NOT DONE ---------- !
+     public static boolean addReview(String author, int productID, String review, float rating) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+
+ 			PreparedStatement ps = con.prepareStatement
+			          ("INSERT INTO review"
+			          + "(author, productID, review, rating) VALUES"
+			          + "(?,?,?,?)");
+			
+ 			ps.setString	(1, author);
+ 			ps.setInt		(2, productID);
+ 			ps.setString	(3, review);
+ 			ps.setFloat		(4, rating);
+ 			
+			ps.executeUpdate(); //for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
 			
 			con.close();
@@ -467,6 +600,43 @@ public class DBHelper
     	 }
     	 
     	 return true;
+     }
+     
+     public static ArrayList<Review> getReviews(int productid) {
+    	 Connection con;
+    	 ArrayList<Review> reviews = new ArrayList<Review>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			ps =con.prepareStatement
+  	 			("SELECT * FROM review WHERE productID = ?;");
+  			
+  			ps.setInt(1, productid);
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				Review review = new Review();
+  				
+  				review.setAuthor	(rs.getString(2));
+  				review.setProductID	(rs.getInt(3));
+  				review.setReview	(rs.getString(4));
+  				review.setRating	(rs.getFloat(5));
+  				
+  				reviews.add(review);
+  			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return reviews;
      }
      
      // ! ---------  NOT DONE ---------- !
@@ -506,6 +676,8 @@ public class DBHelper
 			
 			//ps.executeUpdate(); for updates/inserts
  			//ResultSet rs = ps.executeQuery(); for queries
+ 	    	 
+ 	    	 con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     		 
@@ -536,6 +708,8 @@ public class DBHelper
  				
  				return accountType;
  			}
+ 	    	 
+ 	    	con.close();
     	 } catch (Exception ex) {
     		 ex.printStackTrace();
     	 }
@@ -552,10 +726,17 @@ public class DBHelper
   			con = DriverManager.getConnection
                       ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
   			
-  			PreparedStatement ps =con.prepareStatement
+  			PreparedStatement ps;
+  			
+  			if(type != 0) {
+  				ps =con.prepareStatement
   	 				("SELECT * FROM products WHERE type = ?;");
   			
-  			ps.setInt(1, type);
+  				ps.setInt(1, type);
+  			}else {
+  				ps =con.prepareStatement
+  	 				("SELECT * FROM products;");
+  			}
   			
   			ResultSet rs = ps.executeQuery();
   			
@@ -571,6 +752,66 @@ public class DBHelper
   				
   				products.add(product);
   			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return products;
+    	 
+     }
+     
+     public static ArrayList<Product> getProductsSorted(int sort) {
+    	 //SORT 1 - Name, 2 - Type, 3 - Sales DESC, 4 - Sales ASC, 5 - Newest
+    	 
+    	 Connection con;
+    	 ArrayList<Product> products = new ArrayList<Product>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			if(sort == 1)
+  				ps =con.prepareStatement
+  					("SELECT * FROM products, sales WHERE products.id = sales.productID ORDER BY name;");
+  			else if(sort == 2)
+  				ps =con.prepareStatement
+					("SELECT * FROM products, sales WHERE products.id = sales.productID ORDER BY type;");
+  			else if(sort == 3)
+  				ps =con.prepareStatement
+					("SELECT * FROM products, sales WHERE products.id = sales.productID ORDER BY amountSold DESC;");
+  			else if(sort == 4)
+  				ps =con.prepareStatement
+					("SELECT * FROM products, sales WHERE products.id = sales.productID ORDER BY amountSold ASC;");
+  			else if(sort == 5)
+  				ps =con.prepareStatement
+					("SELECT * FROM products, sales WHERE products.id = sales.productID ORDER BY id DESC;");
+  			else 
+  				ps =con.prepareStatement
+					("SELECT * FROM products, sales WHERE products.id = sales.productID;");
+  				
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				Product product = new Product();
+  				
+  				product.setProductID(rs.getInt(1));
+  				product.setName(rs.getString(2));
+  				product.setType(rs.getInt(3));
+  				product.setDescription(rs.getString(4));
+  				product.setPrice(rs.getFloat(5));
+  				product.setImagePath(rs.getString(6));
+  				product.setSales(rs.getInt(8));
+  				
+  				products.add(product);
+  			} 
+  	    	 
+  	    	 con.close();
      	 } catch (Exception ex) {
      		 ex.printStackTrace();
      	 }
@@ -605,6 +846,8 @@ public class DBHelper
   				product.setPrice(rs.getFloat(5));
   				product.setImagePath(rs.getString(6));
   			} 
+ 	    	 
+ 	    	 con.close();
      	 } catch (Exception ex) {
      		 ex.printStackTrace();
      	 }
