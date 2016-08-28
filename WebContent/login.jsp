@@ -30,9 +30,9 @@
         <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
-      <form class="navbar-form navbar-left" role="search">
+      <form class="navbar-form navbar-left" role="search" action="Search" method="post">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="Search" name="search">
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>

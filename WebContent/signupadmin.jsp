@@ -9,6 +9,34 @@
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <script src="js/bootstrap.min.js"></script>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <%
+					Cookie ck[] = request.getCookies();
+					String user = "";
+					String userType = "0";
+					
+					if(ck != null) {
+						for(int i = 0; i < ck.length; i++) {
+							if(ck[i].getName().equals("user")){
+								user = ck[i].getValue();
+							}
+							
+							if(ck[i].getName().equals("usertype")){
+								userType = ck[i].getValue();
+							}
+						}			
+					}
+					
+					System.out.println("userType: " + userType);
+					
+					if(userType != "4") {
+					   	String site = new String("main.jsp");
+						System.out.println("REDIRECT");
+						
+					   	response.setStatus(response.SC_MOVED_TEMPORARILY);
+					   	response.setHeader("Location", site); 
+					}
+	%>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -30,16 +58,31 @@
         <li><a href="products.jsp?producttype=4">Slippers</a></li>
         
       </ul>
-      <form class="navbar-form navbar-left" role="search">
+      <form class="navbar-form navbar-left" role="search" action="Search" method="post">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="Search" name="search">
         </div>
         <button type="submit" class="btn btn-default"><span class = "glyphicon glyphicon-search"></span></button>
       </form>
+      
+      <form method="post" action="Logout" id="logout">
+      </form>
       <div class="nav navbar-nav navbar-right">
          <ul class="nav navbar-nav">
+         <% if(user.length() == 0) { %>
         <li><a href="login.jsp">Log In</a></li>
-        <li><a href="signup.jsp">Sign Up</a></li>        
+        <li><a href="signup.jsp">Sign Up</a></li>   
+          <%} else { %>
+          	<%if(userType.equals("2")) {%>
+        <li><a href="viewproductadmin.jsp">Manage Products</a></li>
+          	<%} else if(userType.equals("3")) {%>
+        <li><a href="viewproductadmin.jsp">Manage Accounting</a></li>
+          	<%} else if(userType.equals("4")) {%>
+        <li><a href="admin.jsp">Administrator</a></li>
+          	<%} %>
+        <li><a href="#"><%=user%></a></li>
+        <li><a href="Logout">Logout</a></li>   
+        <%} %>
       </ul>
       </div>
     </div><!-- /.navbar-collapse -->

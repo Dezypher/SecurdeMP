@@ -1,15 +1,15 @@
 package models;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Log {
-	private Time time;
+	private Timestamp time;
 	private String details;
 	
-	public Time getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
-	public void setTime(Time time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 	public String getDetails() {

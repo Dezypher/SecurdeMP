@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.DBHelper;
 import models.Account;
+import security.HTMLTagChecker;
 
 /**
  * Servlet implementation class SendReview
@@ -47,6 +48,8 @@ public class SendReviewServlet extends HttpServlet {
 		String review = request.getParameter("review");
 		String rating = request.getParameter("rating");
 		
+		String cleanedReview = HTMLTagChecker.cleanStringTagsWithWhitelist(review);
+		
 		Cookie ck[] = request.getCookies();
 
 		String user = "";
@@ -56,19 +59,20 @@ public class SendReviewServlet extends HttpServlet {
 				user = ck[i].getValue();
 			}
 		}
-		
-		try {
-			 float fRating = Float.parseFloat(rating);
-			 int iProductID = Integer.parseInt(productID);
-			 
-			 DBHelper.addReview(user, iProductID, review, fRating);
-			 
-	   	   	RequestDispatcher rs = request.getRequestDispatcher("viewproduct.jsp?productid=" + productID);
-	   	   	rs.forward(request, response);
-			 
-		} catch (Exception ex) {
-			
-		}
+	
+			try {
+				 float fRating = Float.parseFloat(rating);
+				 int iProductID = Integer.parseInt(productID);
+				 
+				 DBHelper.addReview(user, iProductID, cleanedReview, fRating);
+				 
+		   	   	RequestDispatcher rs = request.getRequestDispatcher("viewproduct.jsp?productid=" + productID);
+		   	   	rs.forward(request, response);
+				 
+			} catch (Exception ex) {
+				ex.printStackTrace();
+		   	   	RequestDispatcher rs = request.getRequestDispatcher("main.jsp");
+		   	   	rs.forward(request, response);
+			}
 	}
-
 }

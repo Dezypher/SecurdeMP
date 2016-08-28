@@ -1,6 +1,6 @@
 package models;
 
-public class AddProductLog extends Log {
+public class DeleteProductLog extends Log {
 	private int userID, productID;
 
 	public int getUserID() {

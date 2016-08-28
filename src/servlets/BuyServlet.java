@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.DBHelper;
 import models.Account;
+import security.CreditCard;
 
 /**
  * Servlet implementation class IncreaseSaleServlet
@@ -46,6 +47,15 @@ public class BuyServlet extends HttpServlet {
 		String ccnumber = request.getParameter("ccnumber");
 		String cvc = request.getParameter("cvc");
 		String expdate = request.getParameter("expdate");
+		String price = request.getParameter("price");
+		
+		float fPrice = 0;
+		
+		try {
+			fPrice = Float.parseFloat(price);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+		}
 		
 		Cookie ck[] = request.getCookies();
 
@@ -57,22 +67,29 @@ public class BuyServlet extends HttpServlet {
 			}
 		}	
 
-		if(ccnumber.length() == 16) {
-			try {
-				int prodID = Integer.parseInt(productID);
-				
-				DBHelper.increaseSales(prodID, 1);
-
+		if(ccnumber.length() == 16 && CreditCard.CheckCreditCardValidity(ccnumber)) {
+			if(CreditCard.CheckCreditCardLimit(ccnumber, fPrice)) {
+				try {
+					int prodID = Integer.parseInt(productID);
+					
+					DBHelper.increaseSales(prodID, 1);
+	
+	                RequestDispatcher rs = request.getRequestDispatcher("buyproduct.jsp?productid=" + productID);
+	                request.setAttribute("errorMessage", "Transaction Successful!");
+	                rs.forward(request, response);
+				} catch (NumberFormatException ex) {
+		           	request.setAttribute("errorMessage", "Something went horribly wrong.");
+				}
+			} else {
+	        	System.out.println("Product price is more than your credit card limit!");
+	           	request.setAttribute("errorMessage", "Product price is more than your credit card limit!");
                 RequestDispatcher rs = request.getRequestDispatcher("buyproduct.jsp?productid=" + productID);
-                request.setAttribute("errorMessage", "Transaction Successful!");
-                rs.forward(request, response);
-			} catch (NumberFormatException ex) {
-	           	request.setAttribute("errorMessage", "Something went horribly wrong.");
+	   	   		rs.forward(request, response);
 			}
         } else {
-        	System.out.println("CCNumber too Long!");
+        	System.out.println("CCNumber invalid!");
            	request.setAttribute("errorMessage", "Invalid Credit Card Number!");
-   	   		RequestDispatcher rs = request.getRequestDispatcher("add.jsp");
+            RequestDispatcher rs = request.getRequestDispatcher("buyproduct.jsp?productid=" + productID);
    	   		rs.forward(request, response);
         }
 	}

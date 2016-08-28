@@ -2,9 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@ page import="models.Product"%>
-<%@ page import="models.Review"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="models.Product"%>
 <%@ page import="database.DBHelper"%>
 
 <html>
@@ -18,7 +17,7 @@
 					Cookie ck[] = request.getCookies();
 					String user = "";
 					String userType = "0";
-	
+					
 					if(ck != null) {
 						for(int i = 0; i < ck.length; i++) {
 							if(ck[i].getName().equals("user")){
@@ -31,16 +30,16 @@
 						}			
 					}
 					
-					int productID = 0;
+					System.out.println("userType: " + userType);
 					
-					try {
-						productID = Integer.parseInt(request.getParameter("productid"));
-					} catch (NumberFormatException ex) {
-						ex.printStackTrace();
+					String searchInput = "";
+					searchInput = request.getParameter("search");
+					
+					ArrayList<Product> products = new ArrayList<Product>();
+					
+					if(searchInput.length() > 0) {
+						products = DBHelper.searchProduct(searchInput);
 					}
-					
-					Product product = DBHelper.getProduct(productID);
-					ArrayList<Review> reviews = DBHelper.getReviews(productID);
 	%>
 	
 </head>
@@ -97,72 +96,43 @@
 </div>
 <br/>
 <!-- put contents here -->
-
 <div class="container">
+	<div>
+		<h1>Search results for <%=searchInput%></h1>
+	</div>
+	<br/>
    <div class="row">
+      <!--Duplicate this part -->
+      <% for(int i = 0; i < products.size(); i++) { %>
+      	<a href=<%="viewproduct.jsp?productid=" + products.get(i).getProductID()%>>
 		      <div class="col-xs-3">
 		         <div class="panel panel-default">
-		            <img src="<%=product.getImagePath()%>" onclick="" />
-		            <h5><%=product.getName()%></h5>
-		            <p class="text-muted">Php <%=product.getPrice()%></p>
-		            <p class="text-muted"><small><%=product.getDescription()%></small></p>
+	            	<img class="thumb1" src="<%=products.get(i).getImagePath()%>" onclick="" />
+		            <h5><%=products.get(i).getName()%></h5>
+		            <p class="text-muted">Php <%=products.get(i).getPrice()%></p>
+		            <p class="text-muted"><small><%=products.get(i).getDescription()%></small></p>
 		         </div>
 		      </div>
+      	</a>
+      <% } %>
+      <!--Duplicate until here -->
    </div>
    
-   <% if(userType.equals("1")){%>
-	   <div><a href=<%="buyproduct.jsp?productid=" + product.getProductID()%>>
-	  	<button class="btn btn-primary" type="button">Buy</button>
-	  </a></div>
-	<% } else { %>
-		<div>Log in to buy this product!</div>
-	<% } %>
-   
-	<div><h2>Reviews</h2></div>
-  	<% for (int i = 0; i < reviews.size(); i++) { %>
-	   <div>
-	   		<div><%=reviews.get(i).getAuthor() + " "%> Rating: <%=reviews.get(i).getRating()%>/5.0</div><br/>
-	   		
-	   		<div><%=reviews.get(i).getReview()%></div>
-	   </div>
-	   </br>
-   <% } %>
-   
-   <% if(userType.equals("1")) { %>
-   <div>
-   		<div>Write your review: </div><br/>
-   		<form action="SendReview" method="post" id="sendReview">
-        	<input type="text" name="review" class="form-control" placeholder="Review..." aria-describedby="basic-addon1">
-        	<br/>
-        		<div class="row">
-			      <div class="col-xs-5">
-			      <h5>Rating</h5>
-			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('1') value="1">1</label>
-			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('2') value="2">2</label>
-			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('3') value="3">3</label>
-			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('4') value="4">4</label>
-			      <label class="radio-inline"><input type="radio" name="rating" onclick = \"getAnswer('5') value="5" checked="checked">5</label>
-			      </div>
-			   </div>
-        	<input type="hidden" name="author" value="<%=user%>">
-        	<input type="hidden" name="productid" value="<%=productID%>">
-        </br>
-  		<button onclick="sendReview()" class="btn btn-primary" type="button">Submit</button>
-  		</form>
-  		<br/>
-   </div>
-   <% } %>
 </div>
   
     <script>
     	function signup(){
     		document.forms["logout"].submit();
     	}
-
-    	function sendReview(){
-    		document.forms["sendReview"].submit();
-    	}
     </script>
+
+<style>
+	.thumb1 { 
+	background: url(blah.jpg) 50% 50% no-repeat; /* 50% 50% centers image in div */
+		width: 250px;
+		height: 250px;
+	}
+</style>
 
 <footer class="footer">
 <div class="container">

@@ -17,13 +17,49 @@ public class DBHelper
 	private final static String dbname = "talaria";
 	private final static String port = "3306";
 	
+	public static String getSalt(String uname) {
+	   	 Connection con;
+	   	 String salt = "abcd1234";
+	   	 
+	   	 try {
+	   		Class.forName("com.mysql.jdbc.Driver");
+				con = DriverManager.getConnection
+	                    ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+				
+				PreparedStatement ps =con.prepareStatement
+		 				("SELECT salt FROM account WHERE user = ?;");
+				
+				ResultSet rs = ps.executeQuery();
+				
+				if(rs.next()) {
+					salt = rs.getString(1);
+				} else {
+					System.out.println("User not found.");
+					
+					return salt;
+				}
+		    	 
+		    	con.close();
+	   	 } catch (Exception ex) {
+	   		 ex.printStackTrace();
+	   	 }
+	   	 
+	   	 return salt;
+	}
+	
      public static boolean checkUser(String uname,String pass) 
      {
       boolean st =false;
       try{
     	  
     //uncomment to encrypt
-    	 //pass = Encrypter.getEncrypted(pass);
+    	 String passWithSalt = pass + getSalt(uname);
+    	 String encryptedPass = Encrypter.getEncrypted(passWithSalt);
+    	 
+    	 System.out.println("pass: " + encryptedPass);
+    	 
+     	if(encryptedPass == null)
+     		return st;
 
 	 //loading drivers for mysql
          Class.forName("com.mysql.jdbc.Driver");
@@ -32,9 +68,9 @@ public class DBHelper
          Connection con=DriverManager.getConnection
                         ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
          PreparedStatement ps =con.prepareStatement
-                             ("select * from account where user=? and password=?");
+                             ("select * from account where user=? and password=? and locked=0");
          ps.setString(1, uname);
-         ps.setString(2, pass);
+         ps.setString(2, encryptedPass);
          ResultSet rs =ps.executeQuery();
          st = rs.next();
 			
@@ -53,7 +89,13 @@ public class DBHelper
     	// 0 - Success, 1 - Username Taken, 2 - E-Mail Taken, 3 - Account Exists (Both), 4 - Server Error
     	
     	//uncomment this to encrypt
-    	//pass = Encrypter.getEncrypted(pass);
+    	
+    	String salt = Encrypter.generateSalt();
+    	String encryptedPass = Encrypter.getEncrypted(pass + salt);
+    	
+    	if(encryptedPass == null)
+    		return 4;
+    	
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection
@@ -86,16 +128,17 @@ public class DBHelper
 			if(result == 0) {
 				ps = con.prepareStatement
 				          ("INSERT INTO account"
-				          + "(user, password, acctype, email, fname, mname, lname) VALUES"
-				          + "(?,?,?,?,?,?,?)");
+				          + "(user, password, acctype, email, fname, mname, lname, salt) VALUES"
+				          + "(?,?,?,?,?,?,?,?)");
 				
 				ps.setString(1, uname);
-				ps.setString(2, pass);
+				ps.setString(2, encryptedPass);
 				ps.setInt	(3, accType);
 				ps.setString(4, email);
 				ps.setString(5, fname);
 				ps.setString(6, mname);
 				ps.setString(7, lname);
+				ps.setString(8, salt);
 				
 				ps.executeUpdate();
 				
@@ -222,7 +265,7 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("SELECT id FROM account where user = '" + user +"';");
+ 				("SELECT id FROM account where user = ?;");
 			
 			//ps.executeUpdate(); for updates/inserts
  			ResultSet rs = ps.executeQuery();
@@ -283,7 +326,7 @@ public class DBHelper
  			con = DriverManager.getConnection
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			PreparedStatement ps = con.prepareStatement
- 				("DELETE FROM products WHERE id = ?");
+ 				("UPDATE products SET disabled = 0 WHERE id = ?");
  			
  			ps.setInt(1, productID);
 			
@@ -705,7 +748,7 @@ public class DBHelper
                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
  			
  			PreparedStatement ps =con.prepareStatement
- 	 				("SELECT acctype FROM account WHERE user = '" + uname + "';");
+ 	 				("SELECT acctype FROM account WHERE user = ?;");
  			
  			ResultSet rs = ps.executeQuery();
  			
@@ -738,12 +781,12 @@ public class DBHelper
   			
   			if(type != 0) {
   				ps =con.prepareStatement
-  	 				("SELECT * FROM products WHERE type = ?;");
+  	 				("SELECT * FROM products WHERE type = ? AND disabled = 0;");
   			
   				ps.setInt(1, type);
   			}else {
   				ps =con.prepareStatement
-  	 				("SELECT * FROM products;");
+  	 				("SELECT * FROM products WHERE disabled = 0;;");
   			}
   			
   			ResultSet rs = ps.executeQuery();
@@ -781,15 +824,17 @@ public class DBHelper
   			
   			PreparedStatement ps;
   			
+  			String like = "%" + input + "%";
+  			
   			//edit for security o3o
   			if(InputChecker.checkInput(input)) {
   				ps =con.prepareStatement
-  	 				("SELECT * FROM products where name LIKE '%?%';");
+  	 				("SELECT * FROM products WHERE name LIKE ? AND disabled = 0;;");
   			
-  				ps.setString(1, input);
+  				ps.setString(1, like);
   			}else {
   				ps =con.prepareStatement
-  	 				("SELECT * FROM products;");
+  	 				("SELECT * FROM products WHERE disabled = 0;");
   			}
   			
   			ResultSet rs = ps.executeQuery();
@@ -813,7 +858,6 @@ public class DBHelper
      	 }
     	 
     	 return products;
-    	 
      }
      
      public static ArrayList<Product> getProductsSorted(int sort) {

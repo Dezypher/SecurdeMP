@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import database.DBHelper;
+import security.InputChecker;
 
 /**
  * Servlet implementation class Login
@@ -30,7 +31,8 @@ public class LoginServlet extends HttpServlet {
         
         String user = request.getParameter("uname");
         String pass = request.getParameter("pass");
-        if(DBHelper.checkUser(user, pass))
+        
+        if(InputChecker.checkInput(user) && InputChecker.checkInput(pass) && DBHelper.checkUser(user, pass))
         {	
             
             Cookie ck = new Cookie("user", user);

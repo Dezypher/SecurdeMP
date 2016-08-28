@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Account;
+import security.HTMLTagChecker;
 import database.DBHelper;
 
 /**
@@ -49,36 +50,56 @@ public class RegisterServlet extends HttpServlet {
         } else */
         //{
         	//ACCOUNT DETAILS
-            String user = request.getParameter("uname");
+            String user = HTMLTagChecker.cleanStringTags(request.getParameter("uname"));
             String pass = request.getParameter("pass");
-            String fname = request.getParameter("fname");
-            String mname = request.getParameter("mname");
-            String lname = request.getParameter("lname");
-            String email = request.getParameter("email");
+            String fname = HTMLTagChecker.cleanStringTags(request.getParameter("fname"));
+            String mname = HTMLTagChecker.cleanStringTags(request.getParameter("mname"));
+            String lname = HTMLTagChecker.cleanStringTags(request.getParameter("lname"));
+            String email = HTMLTagChecker.cleanStringTags(request.getParameter("email"));
         	
             //BILLING ADDRESS
-            String bHouseNo = request.getParameter("bhouseno");
-            String bStreet = request.getParameter("bstreet");
-            String bSubd = request.getParameter("bsubd");
-            String bCity = request.getParameter("bcity");
-            String bPCode = request.getParameter("bpcode");
-            String bCountry = request.getParameter("bcountry");
+            String bHouseNo = HTMLTagChecker.cleanStringTags(request.getParameter("bhouseno"));
+            String bStreet = HTMLTagChecker.cleanStringTags(request.getParameter("bstreet"));
+            String bSubd = HTMLTagChecker.cleanStringTags(request.getParameter("bsubd"));
+            String bCity = HTMLTagChecker.cleanStringTags(request.getParameter("bcity"));
+            String bPCode = HTMLTagChecker.cleanStringTags(request.getParameter("bpcode"));
+            String bCountry = HTMLTagChecker.cleanStringTags(request.getParameter("bcountry"));
         
             //BILLING ADDRESS
-            String sHouseNo = request.getParameter("shouseno");
-            String sStreet = request.getParameter("sstreet");
-            String sSubd = request.getParameter("ssubd");
-            String sCity = request.getParameter("scity");
-            String sPCode = request.getParameter("spcode");
-            String sCountry = request.getParameter("scountry");
+            String sHouseNo = HTMLTagChecker.cleanStringTags(request.getParameter("shouseno"));
+            String sStreet = HTMLTagChecker.cleanStringTags(request.getParameter("sstreet"));
+            String sSubd = HTMLTagChecker.cleanStringTags(request.getParameter("ssubd"));
+            String sCity = HTMLTagChecker.cleanStringTags(request.getParameter("scity"));
+            String sPCode = HTMLTagChecker.cleanStringTags(request.getParameter("spcode"));
+            String sCountry = HTMLTagChecker.cleanStringTags(request.getParameter("scountry"));
             
 	        String errorMsg = "";
 	        boolean accepted = true;
 	        
-	        if(user.length() == 0 	|| pass.length() == 0 	|| 
+	        if(user.length() == 0 	|| pass.length() == 0	|| 
 	           fname.length() == 0 	|| lname.length() == 0 	|| 
 	           mname.length() == 0 	|| email.length() == 0){
 	        	errorMsg += "A field is empty!";
+	        	accepted = false;
+	        }
+	        
+	        if(pass.length() < 6) {
+	        	errorMsg += "Password is too short! Has to be 6 to 64 characters long!";
+	        	accepted = false;
+	        }
+	        
+	        if(pass.length() > 64) {
+	        	errorMsg += "Password is too short! Has to be 6 to 64 characters long!";
+	        	accepted = false;
+	        }
+	        
+	        if(user.length() < 6) {
+	        	errorMsg += "Username is too short! Has to be 6 to 64 characters long!";
+	        	accepted = false;
+	        }
+	        
+	        if(user.length() > 64) {
+	        	errorMsg += "Username is too short! Has to be 6 to 64 characters long!";
 	        	accepted = false;
 	        }
 	        
