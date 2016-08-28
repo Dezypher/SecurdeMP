@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import models.Address;
 import models.Product;
 import models.Review;
+import security.Encrypter;
+import security.HTMLTagChecker;
+import security.InputChecker;
 
 public class DBHelper
  {	
@@ -18,6 +21,9 @@ public class DBHelper
      {
       boolean st =false;
       try{
+    	  
+    //uncomment to encrypt
+    	 //pass = Encrypter.getEncrypted(pass);
 
 	 //loading drivers for mysql
          Class.forName("com.mysql.jdbc.Driver");
@@ -46,6 +52,8 @@ public class DBHelper
     	int result = 0;
     	// 0 - Success, 1 - Username Taken, 2 - E-Mail Taken, 3 - Account Exists (Both), 4 - Server Error
     	
+    	//uncomment this to encrypt
+    	//pass = Encrypter.getEncrypted(pass);
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection
@@ -733,6 +741,52 @@ public class DBHelper
   	 				("SELECT * FROM products WHERE type = ?;");
   			
   				ps.setInt(1, type);
+  			}else {
+  				ps =con.prepareStatement
+  	 				("SELECT * FROM products;");
+  			}
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				Product product = new Product();
+  				
+  				product.setProductID(rs.getInt(1));
+  				product.setName(rs.getString(2));
+  				product.setType(rs.getInt(3));
+  				product.setDescription(rs.getString(4));
+  				product.setPrice(rs.getFloat(5));
+  				product.setImagePath(rs.getString(6));
+  				
+  				products.add(product);
+  			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return products;
+    	 
+     }
+     
+     public static ArrayList<Product> searchProduct(String input) {
+    	 Connection con;
+    	 ArrayList<Product> products = new ArrayList<Product>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			//edit for security o3o
+  			if(InputChecker.checkInput(input)) {
+  				ps =con.prepareStatement
+  	 				("SELECT * FROM products where name LIKE '%?%';");
+  			
+  				ps.setString(1, input);
   			}else {
   				ps =con.prepareStatement
   	 				("SELECT * FROM products;");
