@@ -1,9 +1,13 @@
+<%@page import="java.sql.Date"%>
+<%@page import="models.PurchaseLog"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ page import="models.Product"%>
 <%@ page import="models.Address"%>
+<%@ page import="models.PurchaseLog"%>
 <%@ page import="database.DBHelper"%>
 
 <html>
@@ -29,20 +33,11 @@
 							}
 						}			
 					}
-					
-					int productID = 0;
-					
-					try {
-						productID = Integer.parseInt(request.getParameter("productid"));
-					} catch (NumberFormatException ex) {
-					}
-					
-					Product product = DBHelper.getProduct(productID);
-					
 					int accountID = DBHelper.getAccountID(user);
 					
-					Address shippingAddress = DBHelper.getShippingAddress(accountID);
-					Address billingAddress = DBHelper.getBillingAddress(accountID);
+					ArrayList<PurchaseLog> list = new ArrayList<PurchaseLog>();
+					list = DBHelper.getPrevPurchases(accountID);
+					
 	%>
 	
 </head>
@@ -103,17 +98,17 @@
     <thead>
       <tr>
         <th>Product Name</th>
-        <th>Price</th>
         <th>Date Purchased</th>
       </tr>
     </thead>
     <tbody>
     <!-- duplicate this part -->
+    <%for (int i = 0; i < list.size(); i++) {%>
       <tr>
-        <td>Killer Crocs</td>
-        <td>Php 999.00</td>
-        <td>June 12, 1998</td>
+        <td><% list.get(i).getProductName();%></td>
+        <td><% list.get(i).getTime(); %></td>
       </tr>
+      <%} %>
       <!-- until here -->
     </tbody>
   </table>

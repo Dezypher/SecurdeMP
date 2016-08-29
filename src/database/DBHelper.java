@@ -962,6 +962,40 @@ public class DBHelper
     	 return accounts;
      }
      
+     public static ArrayList<PurchaseLog> getPrevPurchases(int accountID){
+
+    	 Connection con;
+    	 ArrayList<PurchaseLog> purchases = new ArrayList<PurchaseLog>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			ps =con.prepareStatement
+  	 				("SELECT p.name, l.timestamp FROM products p, log_purchase l WHERE l.accountid = accountID;");
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				PurchaseLog purchase = new PurchaseLog();
+  				
+  				purchase.setProductName(rs.getString(1));
+  				purchase.setTime(rs.getTimestamp(2));
+  				
+  				purchases.add(purchase);
+  			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return purchases;
+     }
+     
      public static ArrayList<PurchaseLog> getPurchaseLogs(int accountID){
 
     	 Connection con;
