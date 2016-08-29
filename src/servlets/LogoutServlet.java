@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.LogGenerator;
+
 /**
  * Servlet implementation class Logout
  */
@@ -25,15 +27,30 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+		String user = "";
+
+		Cookie ck[] = request.getCookies();
+		if(ck != null) {
+			for(int i = 0; i < ck.length; i++) {
+				if(ck[i].getName().equals("user")){
+					user = ck[i].getValue();
+				}
+			}			
+		}
 		
-		Cookie ck = new Cookie("user", "");
-		ck.setMaxAge(0);
+        LogGenerator.generateLoginLog(user, 0);
+        
+		Cookie ckU = new Cookie("user", "");
+		ckU.setMaxAge(0);
 		Cookie ckT = new Cookie("usertype", "");
-		ck.setMaxAge(0);
+		ckT.setMaxAge(0);
 		
-		response.addCookie(ck);
+		response.addCookie(ckU);
 		response.addCookie(ckT);
-		
+
+        LogGenerator.generateLogoutLog(user, 0);
+        
 		System.out.println("LOGOUT");
 		
 		//RequestDispatcher rs = request.getRequestDispatcher("main.jsp");

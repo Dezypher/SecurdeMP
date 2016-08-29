@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.DBHelper;
 import models.Account;
+import models.LogGenerator;
+import models.PurchaseLog;
+import models.SaleLog;
 import security.CreditCard;
 
 /**
@@ -72,8 +75,13 @@ public class BuyServlet extends HttpServlet {
 				try {
 					int prodID = Integer.parseInt(productID);
 					
+					SaleLog log = LogGenerator.generateSaleLog("", prodID, DBHelper.getAccountID(user), fPrice);
+					PurchaseLog pLog = LogGenerator.generatePurchaseLog(user, prodID, DBHelper.getAccountID(user), fPrice);
+					
 					DBHelper.increaseSales(prodID, 1);
-	
+					DBHelper.createSaleLog(log);
+					DBHelper.createPurchaseLog(pLog);
+			        
 	                RequestDispatcher rs = request.getRequestDispatcher("buyproduct.jsp?productid=" + productID);
 	                request.setAttribute("errorMessage", "Transaction Successful!");
 	                rs.forward(request, response);

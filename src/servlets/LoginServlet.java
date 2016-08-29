@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import database.DBHelper;
+import models.LogGenerator;
 import security.InputChecker;
 
 /**
@@ -43,6 +44,7 @@ public class LoginServlet extends HttpServlet {
             Cookie ckT = new Cookie("usertype", userType);
             ck.setMaxAge(100000);
             
+            LogGenerator.generateLoginLog(user, 0);
         	
             response.addCookie(ck);
             response.addCookie(ckT);

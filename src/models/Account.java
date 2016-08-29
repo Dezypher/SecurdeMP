@@ -8,7 +8,7 @@ public class Account {
 	public static final int TYPE_ADMINISTRATOR 		= 4;
 	
 	private String username, password, email, firstName, middleName, lastName;
-	private int accountType, userID;
+	private int accountType, userID, locked;
 	
 	public String getUsername() {
 		return username;
@@ -57,5 +57,12 @@ public class Account {
 	}
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+	
+	public int getLocked() {
+		return locked;
+	}
+	public void setLocked(int locked) {
+		this.locked = locked;
 	}
 }

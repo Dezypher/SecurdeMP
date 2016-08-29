@@ -3,6 +3,7 @@ package models;
 public class SaleLog extends Log {
 	private int productID, customerID;
 	private float price;
+	
 	public int getProductID() {
 		return productID;
 	}

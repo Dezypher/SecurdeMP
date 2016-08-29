@@ -3,9 +3,12 @@ package database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import models.Account;
 import models.Address;
 import models.Product;
+import models.PurchaseLog;
 import models.Review;
+import models.SaleLog;
 import security.Encrypter;
 import security.HTMLTagChecker;
 import security.InputChecker;
@@ -28,6 +31,8 @@ public class DBHelper
 				
 				PreparedStatement ps =con.prepareStatement
 		 				("SELECT salt FROM account WHERE user = ?;");
+				
+				ps.setString(1, uname);
 				
 				ResultSet rs = ps.executeQuery();
 				
@@ -267,6 +272,8 @@ public class DBHelper
  			PreparedStatement ps = con.prepareStatement
  				("SELECT id FROM account where user = ?;");
 			
+ 			ps.setString(1, user);
+ 			
 			//ps.executeUpdate(); for updates/inserts
  			ResultSet rs = ps.executeQuery();
 			
@@ -750,6 +757,8 @@ public class DBHelper
  			PreparedStatement ps =con.prepareStatement
  	 				("SELECT acctype FROM account WHERE user = ?;");
  			
+ 			ps.setString(1, uname);
+ 			
  			ResultSet rs = ps.executeQuery();
  			
  			if(rs.next()) {
@@ -829,7 +838,7 @@ public class DBHelper
   			//edit for security o3o
   			if(InputChecker.checkInput(input)) {
   				ps =con.prepareStatement
-  	 				("SELECT * FROM products WHERE name LIKE ? AND disabled = 0;;");
+  	 				("SELECT * FROM products WHERE name LIKE ? AND disabled = 0;");
   			
   				ps.setString(1, like);
   			}else {
@@ -917,6 +926,186 @@ public class DBHelper
     	 return products;
     	 
      }
+     
+     public static ArrayList<Account> getAllAccounts() {
+
+    	 Connection con;
+    	 ArrayList<Account> accounts = new ArrayList<Account>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			ps =con.prepareStatement
+  	 				("SELECT user, acctype, locked FROM account WHERE type != 4;");
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				Account account = new Account();
+  				
+  				account.setUsername(rs.getString(1));
+  				account.setAccountType(rs.getInt(2));
+  				account.setLocked(rs.getInt(3));
+  				
+  				accounts.add(account);
+  			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return accounts;
+     }
+     
+     public static ArrayList<PurchaseLog> getPurchaseLogs(int accountID){
+
+    	 Connection con;
+    	 ArrayList<PurchaseLog> purchases = new ArrayList<PurchaseLog>();
+    	 
+    	 try {
+     		Class.forName("com.mysql.jdbc.Driver");
+  			con = DriverManager.getConnection
+                      ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+  			
+  			PreparedStatement ps;
+  			
+  			ps =con.prepareStatement
+  	 				("SELECT productid, timestamp FROM log_purchase WHERE accountid = accountID;");
+  			
+  			ResultSet rs = ps.executeQuery();
+  			
+  			while(rs.next()) {
+  				PurchaseLog purchase = new PurchaseLog();
+  				
+  				purchase.setproductID(rs.getInt(1));
+  				purchase.setTime(rs.getTimestamp(2));
+  				
+  				purchases.add(purchase);
+  			} 
+  	    	 
+  	    	 con.close();
+     	 } catch (Exception ex) {
+     		 ex.printStackTrace();
+     	 }
+    	 
+    	 return purchases;
+     }
+     
+     public static boolean lockAccount(int accountID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("UPDATE account SET locked = 0 WHERE id = ?");
+ 			
+ 			ps.setInt(1, accountID);
+			
+			ps.executeUpdate(); //for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+    	 
+     }
+     
+     public static boolean unlockAccount(int accountID) {
+    	 Connection con;
+    	 
+    	 try {
+    		Class.forName("com.mysql.jdbc.Driver");
+ 			con = DriverManager.getConnection
+                     ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+ 			PreparedStatement ps = con.prepareStatement
+ 				("UPDATE account SET locked = 1 WHERE id = ?");
+ 			
+ 			ps.setInt(1, accountID);
+			
+			ps.executeUpdate(); //for updates
+ 			//ResultSet rs = ps.executeQuery(); for queries
+			
+			con.close();
+    	 } catch (Exception ex) {
+    		 ex.printStackTrace();
+    		 
+    		 return false;
+    	 }
+    	 
+    	 return true;
+    	 
+     }
+
+     public static boolean createSaleLog(SaleLog log) {Connection con;
+	 
+		 try {
+			Class.forName("com.mysql.jdbc.Driver");
+				con = DriverManager.getConnection
+	                 ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+				PreparedStatement ps = con.prepareStatement
+					("INSERT INTO log_sale"
+							+ "(productid, timestamp) VALUES"
+						    + "(?,?)");
+				
+			Object timestamp = log.getTime();
+				
+			ps.setInt		(1, log.getProductID());
+			ps.setObject	(2, timestamp);
+			
+			ps.executeUpdate();
+			
+			con.close();
+		 } catch (Exception ex) {
+			 ex.printStackTrace();
+			 
+			 return false;
+		 }
+		 
+		 return true;
+    	 
+     }
+     
+     public static boolean createPurchaseLog(PurchaseLog log) {Connection con;
+		 
+		 try {
+			Class.forName("com.mysql.jdbc.Driver");
+				con = DriverManager.getConnection
+	                 ("jdbc:mysql://localhost:" + port + "/" + dbname, username, password);
+				PreparedStatement ps = con.prepareStatement
+					("INSERT INTO log_purchase"
+							+ "(accountid, productid, timestamp) VALUES"
+						    + "(?,?,?)");
+				
+			Object timestamp = log.getTime();
+
+			ps.setInt		(1, log.getCustomerID());
+			ps.setInt		(2, log.getproductID());
+			ps.setObject	(3, timestamp);
+			
+			ps.executeUpdate();
+	
+			con.close();
+		 } catch (Exception ex) {
+			 ex.printStackTrace();
+			 
+			 return false;
+		 }
+		 
+		 return true;
+		 
+	 }
      
      public static Product getProduct(int id) {
     	 Connection con;
